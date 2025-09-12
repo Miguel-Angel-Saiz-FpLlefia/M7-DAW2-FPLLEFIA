@@ -1,27 +1,40 @@
 <?php
+    function sayHello($name) {
+        echo "Hello $name!";
+    }
 
-/*----------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for license information.
- *---------------------------------------------------------------------------------------*/
-
-function sayHello($name) {
-	echo "Hello $name!";
-}
-
+    function sayGoodBye($name) {
+        $fecha = date("Y-d-m");
+        echo "$name at fecha: $fecha";
+    }
 ?>
 
 <html>
-	<head>
-		<title>Visual Studio Code Remote :: PHP</title>
-	</head>
-	<body>
-		<?php 
-		
-		sayHello('remote world');
-			
-		phpinfo(); 
-			
-		?>
-	</body>
+    <head>
+        <title>Miguel Angel Saiz Angullo</title>
+		<link rel="stylesheet" href="practicas/pp1-primera-app/style.css">
+    </head>
+    <body>
+		<header>
+			<h1>Módulo 7 - Práctica 1. Mi primera aplicación en PHP</h1>
+			<img src="practicas/pp1-primera-app/img/logo-fpllefia.jfif" alt="">
+			<div class="columnes">
+				<img src="practicas/pp1-primera-app/img/fotoPersonal.jpg" alt="">
+				<p>
+					<?php
+					sayHello("Miguel Angel");
+					?>
+				</p>
+			</div>
+			<p>El comando phinfo() es una función la cual nos muestra toda la información del sobre la configuración de nuestro PHP.</p>
+		</header>
+		<footer>
+			<p>
+				<?php
+					sayGoodBye("Miguel Angel Saiz Angullo");
+				?>
+			</p> 
+    	</footer>
+    </body>
+    
 </html>

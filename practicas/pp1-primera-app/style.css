@@ -1,0 +1,7 @@
+.columnes {
+    display: flex;
+}
+
+.columnes img{
+    border-radius: 100%
+}
