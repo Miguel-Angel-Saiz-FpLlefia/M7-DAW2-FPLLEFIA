@@ -1,40 +1,81 @@
-<?php
-    function sayHello($name) {
-        echo "Hello $name!";
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>p1 php</title>
+</head>
+<body>
+	<h1>Hola pp1 teoria</h1>
 
-    function sayGoodBye($name) {
-        $fecha = date("Y-d-m");
-        echo "$name at fecha: $fecha";
-    }
-?>
+	<?php
+		echo "<h2>Hola subtitulo</h2>";
+		echo 'Hola mundo con comillas simples';
+		echo "<br>"; //Para realizar el salto de linea
 
-<html>
-    <head>
-        <title>Miguel Angel Saiz Angullo</title>
-		<link rel="stylesheet" href="practicas/pp1-primera-app/style.css">
-    </head>
-    <body>
-		<header>
-			<h1>Módulo 7 - Práctica 1. Mi primera aplicación en PHP</h1>
-			<img src="practicas/pp1-primera-app/img/logo-fpllefia.jfif" alt="">
-			<div class="columnes">
-				<img src="practicas/pp1-primera-app/img/fotoPersonal.jpg" alt="">
-				<p>
-					<?php
-					sayHello("Miguel Angel");
-					?>
-				</p>
-			</div>
-			<p>El comando phinfo() es una función la cual nos muestra toda la información del sobre la configuración de nuestro PHP.</p>
-		</header>
-		<footer>
-			<p>
-				<?php
-					sayGoodBye("Miguel Angel Saiz Angullo");
-				?>
-			</p> 
-    	</footer>
-    </body>
-    
+		$nom = "Miguel Angel";
+		$apellido = 'Saiz';
+		$edad = 21;
+		$frase = "Hola soy $nom $apellido y tengo $edad años"; //Bien
+
+		//$frase = 'Hola soy $nom $apellido y tengo $edad años'; Mal
+		
+		// Con comilla '' no se puede concanternar las variables en una frase,
+		// ya que se copian literalmente;
+
+		echo "Hola me llamo " . $nom ." " . $apellido . " y tengo " . $edad . " años";
+
+		echo "<br>"; //Para realizar el salto de linea
+
+		echo "$frase";
+
+		//CONDICIONALES
+		echo "<br>";
+		echo "<br>";
+		echo "<br>";
+		echo "<h1>Condicionales</h1>";
+		echo "<br>";
+
+		if($edad < 22) {
+			echo "eres mayor de edad";
+		}else{
+			"eres menor de edad";
+		}
+		// ==
+		//%
+		//!=
+		// <= >= < >
+
+		//BUCLES
+		echo "<br>";
+		echo "<br>";
+		echo "<br>";
+		echo "<h1> Bucles</h1>";
+	?>
+
+	<section class="div_padre">
+		<h1>Numeros 0-10:</h1>
+		
+		<?php
+			for($i = 0; $i <= 10; $i ++){
+				echo "<div class=\"num_box\">Numero: $i <br></div>";
+				//echo '<div class="num_box">Numero: ' . $i . '<br></div>';
+				//echo "<div class='num_box'>Numero $i <br></div>";
+			}
+		?>
+	</section>
+
+	<style>
+		.num_box{
+			background-color: red;
+			padding: 2rem;
+		}
+		.div_padre{
+			background-color: green;
+			gap: 1rem;
+			display: flex;
+			flex-wrap: wrap;
+		}
+	</style>
+</body>
 </html>
