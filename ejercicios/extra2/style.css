@@ -1,0 +1,60 @@
+h1{
+    text-align: center;
+}
+.fred{
+    background-color: blue;
+    color: #fff;
+    width: 200px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    border-radius: 15px;
+}
+
+.suau{
+    background-color: yellow;
+    color: #000;
+    width: 200px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    border-radius: 15px;
+}
+
+.calor{
+    background-color: red;
+    color: #fff;
+    width: 200px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    border-radius: 15px;
+}
+
+.juntos{
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.solo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tempMedia{
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+}

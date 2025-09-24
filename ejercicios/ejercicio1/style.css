@@ -1,0 +1,11 @@
+div {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    color: #2c3e50;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: inline-block;
+    margin: 8px;
+}

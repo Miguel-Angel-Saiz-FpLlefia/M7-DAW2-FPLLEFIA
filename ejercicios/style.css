@@ -1,0 +1,44 @@
+.pagina{
+    width: 80%;        /* o max-width: 1200px; */
+    margin: 0 auto;    /* centrado horizontal */
+    background: #fff;
+}
+
+h1{
+    text-align: center;
+}
+
+.practicas{
+    width: 500px;
+    height: 350px;
+    background-color: aquamarine;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.practicas a{
+    margin-left: 20px;
+}
+
+img{
+    width: 200px;
+    height: 150px;
+    margin-top: 10px;
+}
+
+.especial{
+    width: 250px;
+}
+
+h3, a{
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+.practicasJuntas{
+    display: flex;
+    gap: 20px;
+}

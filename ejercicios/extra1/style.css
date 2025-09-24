@@ -1,0 +1,47 @@
+main{
+    width: 80%;        /* o max-width: 1200px; */
+    margin: 0 auto;    /* centrado horizontal */
+    background-color: antiquewhite;
+    padding: 20px;
+    border: 1px solid aliceblue;
+    border-radius: 15px;
+}
+
+h1{
+    text-align: center;
+}
+
+.primer{
+    color: green;
+    text-align: center;
+}
+
+.noPrimer{
+    color: red;
+    text-align: center;
+}
+
+.cartaNumero{
+    width: 40px;
+    height: 40px;
+    background-color: aqua;
+    border: 1px solid blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.numerosJuntos{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+h3{
+    text-align: center;
+}
+
+.numeroAleatorio{
+    text-align: center;
+}
