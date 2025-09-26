@@ -1,0 +1,56 @@
+*{
+    font-family: 'poppins', sans-serif;
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: aliceblue;
+}
+
+main{
+    background-color: antiquewhite;
+}
+
+.cardPelicula{
+    width: 220px;
+    height: 220px;
+    margin-top: 100px;
+    transition-property: hover;
+    transition-duration: 1s;
+}
+
+.cardPelicula:hover .oculto{
+    visibility: visible;
+    transition-timing-function: ease-in;
+}
+
+.cardPelicula img{
+    width: 200px;
+    height: 250px;
+    border-radius: 15px;
+}
+
+.juntos{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.oculto{
+    position: relative;
+    margin-top: -273px;
+    background-color: black;
+    color: white;
+    visibility: hidden;
+    width: 200px;
+    border-radius: 15px;
+    height: 250px;
+    transition: visibility 0.1s ease-in-out;
+}
+
+.oculto p{
+    text-align: center;
+}
