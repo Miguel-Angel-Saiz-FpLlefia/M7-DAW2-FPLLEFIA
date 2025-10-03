@@ -24,6 +24,7 @@ main{
 .cardPelicula:hover .oculto{
     visibility: visible;
     transition-timing-function: ease-in;
+    cursor: pointer;
 }
 
 .cardPelicula img{
