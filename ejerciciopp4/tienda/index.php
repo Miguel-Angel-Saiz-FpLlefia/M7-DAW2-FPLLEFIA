@@ -68,10 +68,18 @@
             font-size: 0.85rem;
             color: #888;
         }
+
+        #fotoPerfil2{
+            width: 100px;
+            height: 150px;
+        }
     </style>
 </head>
 <body>
     <?php
+        $nombre = $_POST['nombre'];
+        $telefono = $_POST['telefono'];
+        $foto = $_POST['foto'];
         include('includes/header.php')
     ?>
     <main>
@@ -79,17 +87,25 @@
 
         <div class="productos-container">
             <?php
-                include('data/productos.php');
-                foreach ($productos as $id => $producto): ?>
-                    <div class="producto-card">
-                        <div class="producto-nombre"><?= htmlspecialchars($producto['nombre']) ?></div>
-                        <div class="producto-categoria"><?= htmlspecialchars($producto['categoria']) ?></div>
-                        <div class="producto-descripcion"><?= htmlspecialchars($producto['descripcion']) ?></div>
-                        <div class="producto-precio">$<?= number_format($producto['precio'], 2) ?></div>
-                        <div class="producto-stock"><?= $producto['stock'] ?> disponibles</div>
-                    </div>
-            <?php endforeach; ?>
+                require_once __DIR__ . '/includes/funciones.php';
++               generarProductos();
+            ?>
+        </div>
+
+        <div>
+            <?php
+                $nombre = $_POST['nombre'];
+                $telefono = $_POST['telefono'];
+                $foto = $_POST['foto'];
+                echo "<p>Eres el usuario $nombre</p>";
+                echo "<p>Con el numero de telefono: $telefono</p>";
+                echo "<img src=\"$foto\" alt=\"foto del usuario\" id=\"fotoPerfil2\">";
+            ?>
         </div>
     </main>
+
+    <?php
+        include ('includes/footer.php');
+    ?>
 </body>
 </html>
