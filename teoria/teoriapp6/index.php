@@ -4,6 +4,11 @@
 
     $result = returnUsersData();
 
+    session_start();
+    if(isset($_SESSION['user_nom'])) {
+        echo "<h2>Bienvenido, " . htmlspecialchars($_SESSION['user_nom']);
+    }
+
     echo "<table border='1' cellpadding='8' cellspacing='0'>";
 
     echo "<tr>
