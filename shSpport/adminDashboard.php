@@ -498,7 +498,7 @@
                                         $parentId = $comentari['parent_comentario_id'] === NULL ? '' : $comentari['parent_comentario_id'];
                                         echo '<td class="action-btns">
                                                 <button class="btn-edit" onclick="editarComentario('.$comentari['comentario_id'].', '.$comentari['noticia_id'].', '.$comentari['usuario_id'].', \''.addslashes($comentari['contenido']).'\', \''.$parentId.'\')">Editar</button>
-                                                <button class="btn-delete">Borrar</button>
+                                                <button class="btn-delete" onclick="confirmarEliminar(\'comentario\', '.$comentari['comentario_id'].')">Borrar</button>
                                             </td></tr>';
                                     }
                                 ?>
@@ -588,7 +588,7 @@
                                             <td>".$detalleReserva['precio_unidad_auditoria']."</td>
                                             <td class='action-btns'>
                                                 <button class='btn-edit' onclick='editarDetalleReserva(".$detalleReserva['detalle_id'].", ".$detalleReserva['reserva_id'].", ".$detalleReserva['entrada_id'].", ".$detalleReserva['precio_unidad_auditoria'].")'>Editar</button>
-                                                <button class='btn-delete'>Borrar</button>
+                                                <button class='btn-delete' onclick='confirmarEliminar(\"detalle_reserva\", ".$detalleReserva['detalle_id'].")'>Borrar</button>
                                             </td>
                                         </tr>";
                                     }
@@ -689,7 +689,7 @@
                                             <td>".$entrada['stock_disponible']."</td>
                                             <td class='action-btns'>
                                                 <button class='btn-edit' onclick='editarEntrada(".$entrada['entrada_id'].", ".$entrada['evento_id'].", ".$entrada['zona_id'].", ".$entrada['precio'].", ".$entrada['stock_disponible'].")'>Editar</button>
-                                                <button class='btn-delete'>Borrar</button>
+                                                <button class='btn-delete' onclick='confirmarEliminar(\"entrada\", ".$entrada['entrada_id'].")'>Borrar</button>
                                             </td>
                                         </tr>";
                                     }
@@ -826,7 +826,7 @@
                                             <td>".$evento['es_Activo']."</td>
                                             <td class='action-btns'>
                                                 <button class='btn-edit' onclick='editarEvento(".$evento['evento_id'].", \"".addslashes($evento['nombre_evento'])."\", \"".str_replace(' ', 'T', $evento['fecha_hora'])."\", \"".addslashes($evento['ubicacion'])."\", \"".addslashes($evento['deporte'])."\", \"".addslashes($evento['descripcion'])."\", \"".addslashes($evento['imagen_url'])."\", ".$evento['es_Activo'].")'>Editar</button>
-                                                <button class='btn-delete'>Borrar</button>
+                                                <button class='btn-delete' onclick='confirmarEliminar(\"evento\", ".$evento['evento_id'].")'>Borrar</button>
                                             </td>
                                         </tr>";
                                     }
@@ -907,7 +907,7 @@
                                             <td>".$faq['respuesta']."</td>
                                             <td class='action-btns'>
                                                 <button class='btn-edit' onclick='editarFaq(".$faq['faq_id'].", \"".addslashes($faq['pregunta'])."\", \"".addslashes($faq['respuesta'])."\")'>Editar</button>
-                                                <button class='btn-delete'>Borrar</button>
+                                                <button class='btn-delete' onclick='confirmarEliminar(\"faq\", ".$faq['faq_id'].")'>Borrar</button>
                                             </td>
                                         </tr>";
                                     }
@@ -1020,7 +1020,7 @@
                                             <td>".$noticia['imagen_url']."</td>
                                             <td class='action-btns'>
                                                 <button class='btn-edit' onclick='editarNoticia(".$noticia['noticia_id'].", ".$noticia['usuario_id'].", \"".addslashes($noticia['titulo'])."\", \"".addslashes($noticia['subtitulo'])."\", \"".addslashes($noticia['contenido'])."\", \"".addslashes($noticia['imagen_url'])."\")'>Editar</button>
-                                                <button class='btn-delete'>Borrar</button>
+                                                <button class='btn-delete' onclick='confirmarEliminar(\"noticia\", ".$noticia['noticia_id'].")'>Borrar</button>
                                             </td>
                                         </tr>";
                                     }
@@ -1157,7 +1157,7 @@
                                             <td>".$portfolio['id_tipoDeporte']."</td>
                                             <td class='action-btns'>
                                                 <button class='btn-edit' onclick='editarPortfolio(".$portfolio['portfolio_id'].", \"".addslashes($portfolio['titulo'])."\", \"".addslashes($portfolio['descripcion'])."\", \"".addslashes($portfolio['cliente'])."\", \"".$portfolio['fecha_proyecto']."\", \"".addslashes($portfolio['imagen_url'])."\", ".$portfolio['es_destacado'].", ".$portfolio['id_tipoDeporte'].")'>Editar</button>
-                                                <button class='btn-delete'>Borrar</button>
+                                                <button class='btn-delete' onclick='confirmarEliminar(\"portfolio\", ".$portfolio['portfolio_id'].")'>Borrar</button>
                                             </td>
                                         </tr>";
                                     }
@@ -1258,7 +1258,7 @@
                                             <td>".$reserva['estado']."</td>
                                             <td class='action-btns'>
                                                 <button class='btn-edit' onclick='editarReserva(".$reserva['reserva_id'].", ".$reserva['usuario_id'].", ".$reserva['total_monto'].", \"".$reserva['estado']."\")'>Editar</button>
-                                                <button class='btn-delete'>Borrar</button>
+                                                <button class='btn-delete' onclick='confirmarEliminar(\"reserva\", ".$reserva['reserva_id'].")'>Borrar</button>
                                             </td>
                                         </tr>";
                                     }
@@ -1329,7 +1329,7 @@
                                             <td>".$rol['nombre_rol']."</td>
                                             <td class='action-btns'>
                                                 <button class='btn-edit' onclick='editarRol(".$rol['role_id'].", \"".addslashes($rol['nombre_rol'])."\")'>Editar</button>
-                                                <button class='btn-delete'>Borrar</button>
+                                                <button class='btn-delete' onclick='confirmarEliminar(\"rol\", ".$rol['role_id'].")'>Borrar</button>
                                             </td>
                                         </tr>";
                                     }
@@ -1458,7 +1458,7 @@
                                             <td>".$testimonio['es_aprobado']."</td>
                                             <td class='action-btns'>
                                                 <button class='btn-edit' onclick='editarTestimonio(".$testimonio['testimonio_id'].", ".$testimonio['usuario_id'].", \"".addslashes($testimonio['nombre_cliente'])."\", \"".addslashes($testimonio['cargo'])."\", \"".addslashes($testimonio['contenido'])."\", ".$testimonio['puntuacion'].", ".$testimonio['es_aprobado'].")'>Editar</button>
-                                                <button class='btn-delete'>Borrar</button>
+                                                <button class='btn-delete' onclick='confirmarEliminar(\"testimonio\", ".$testimonio['testimonio_id'].")'>Borrar</button>
                                             </td>
                                         </tr>";
                                     }
@@ -1529,7 +1529,7 @@
                                             <td>".$tipoDeporte['tipo']."</td>
                                             <td class='action-btns'>
                                                 <button class='btn-edit' onclick='editarTipoDeporte(".$tipoDeporte['id_tipoDeporte'].", \"".addslashes($tipoDeporte['tipo'])."\")'>Editar</button>
-                                                <button class='btn-delete'>Borrar</button>
+                                                <button class='btn-delete' onclick='confirmarEliminar(\"tipo_deporte\", ".$tipoDeporte['id_tipoDeporte'].")'>Borrar</button>
                                             </td>
                                         </tr>";
                                     }
@@ -1650,13 +1650,32 @@
                                             <td>".$usuario['foto']."</td>
                                             <td class='action-btns'>
                                                 <button class='btn-edit' onclick='editarUsuario(".$usuario['usuario_id'].", ".$usuario['role_id'].", \"".addslashes($usuario['nombre'])."\", \"".addslashes($usuario['apellido'])."\", \"".addslashes($usuario['email'])."\", \"".addslashes($usuario['foto'])."\")'>Editar</button>
-                                                <button class='btn-delete'>Borrar</button>
+                                                <button class='btn-delete' onclick='confirmarEliminar(\"usuario\", ".$usuario['usuario_id'].")'>Borrar</button>
                                             </td>
                                         </tr>";
                                     }
                                 ?>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <!-- Modal de confirmación para eliminar -->
+                <div class="modal-overlay" id="modalConfirmarEliminar">
+                    <div class="modal-content" style="max-width: 400px;">
+                        <div class="modal-header" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);">
+                            <h3><i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación</h3>
+                            <button class="modal-close" onclick="cerrarModal('modalConfirmarEliminar')">&times;</button>
+                        </div>
+                        <div style="padding: 20px; text-align: center;">
+                            <i class="fas fa-trash-alt" style="font-size: 48px; color: #dc3545; margin-bottom: 15px;"></i>
+                            <p style="font-size: 16px; margin-bottom: 10px;">¿Estás seguro que quieres eliminar este registro?</p>
+                            <p style="font-size: 14px; color: #666;" id="deleteItemInfo"></p>
+                            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                                <button class="btn-submit" style="background: #6c757d;" onclick="cerrarModal('modalConfirmarEliminar')"><i class="fas fa-times"></i> Cancelar</button>
+                                <button class="btn-submit" style="background: #dc3545;" id="btnConfirmarEliminar"><i class="fas fa-trash"></i> Eliminar</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1721,7 +1740,7 @@
                                             <td>".$zona['nombre_zona']."</td>
                                             <td class='action-btns'>
                                                 <button class='btn-edit' onclick='editarZona(".$zona['zona_id'].", \"".addslashes($zona['nombre_zona'])."\")'>Editar</button>
-                                                <button class='btn-delete'>Borrar</button>
+                                                <button class='btn-delete' onclick='confirmarEliminar(\"zona\", ".$zona['zona_id'].")'>Borrar</button>
                                             </td>
                                         </tr>";
                                     }
@@ -1743,6 +1762,48 @@
         function cerrarModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
         }
+
+        // Variables para almacenar información de eliminación
+        let deleteType = '';
+        let deleteId = '';
+
+        // Función para mostrar el modal de confirmación de eliminación
+        function confirmarEliminar(tipo, id) {
+            deleteType = tipo;
+            deleteId = id;
+            
+            // Nombres amigables para mostrar
+            const nombres = {
+                'comentario': 'Comentario',
+                'detalle_reserva': 'Detalle de Reserva',
+                'entrada': 'Entrada',
+                'evento': 'Evento',
+                'faq': 'FAQ',
+                'noticia': 'Noticia',
+                'portfolio': 'Portfolio',
+                'reserva': 'Reserva',
+                'rol': 'Rol',
+                'testimonio': 'Testimonio',
+                'tipo_deporte': 'Tipo de Deporte',
+                'usuario': 'Usuario',
+                'zona': 'Zona'
+            };
+            
+            document.getElementById('deleteItemInfo').textContent = nombres[tipo] + ' con ID: ' + id;
+            abrirModal('modalConfirmarEliminar');
+        }
+
+        // Configurar el botón de confirmar eliminación
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('btnConfirmarEliminar').addEventListener('click', function() {
+                // Aquí iría la lógica para eliminar de la BD
+                // Por ahora solo mostramos un mensaje
+                alert('Eliminando ' + deleteType + ' con ID: ' + deleteId);
+                cerrarModal('modalConfirmarEliminar');
+                // Cuando tengas la BD configurada, descomentar y usar:
+                // window.location.href = 'funciones/funciones.php?accion=eliminar' + deleteType.charAt(0).toUpperCase() + deleteType.slice(1) + '&id=' + deleteId;
+            });
+        });
 
         // Cerrar modal al hacer clic fuera del contenido
         document.querySelectorAll('.modal-overlay').forEach(function(modal) {
