@@ -234,7 +234,6 @@
         /* Botones Generales (similares a los del sitio) */
         .btn-add {
             background: var(--gradient-primary);
-            color: white;
             padding: 0.8rem 1.5rem;
             border-radius: 6px;
             text-decoration: none;
@@ -269,14 +268,19 @@
             </div>
             <nav class="sidebar-menu">
                 <ul>
-                    <li><a href="admin_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="admin_db_gestion.html" class="active"><i class="fas fa-database"></i> Gestión de DB</a></li>
-                    <li><a href="#"><i class="fas fa-ticket-alt"></i> Entradas</a></li>
-                    <li><a href="#"><i class="fas fa-futbol"></i> Eventos</a></li>
-                    <li><a href="#"><i class="fas fa-users"></i> Usuarios</a></li>
-                    <li><a href="#"><i class="fas fa-file-invoice-dollar"></i> Finanzas</a></li>
-                    <li><a href="#"><i class="fas fa-chart-line"></i> Reportes</a></li>
-                    <li><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
+                    <li><a href="#comentarios" class="active"><i class="fas fa-database"></i> Comentarios</a></li>
+                    <li><a href="#detalleReserva"><i class="fas fa-ticket-alt"></i> Detalles de las reservas</a></li>
+                    <li><a href="entradas.php"><i class="fas fa-futbol"></i> Entradas</a></li>
+                    <li><a href="eventos.php"><i class="fas fa-users"></i> Eventos</a></li>
+                    <li><a href="faqs.php"><i class="fas fa-file-invoice-dollar"></i> Faqs</a></li>
+                    <li><a href="noticias.php"><i class="fas fa-chart-line"></i> Noticias</a></li>
+                    <li><a href="portfolio.php"><i class="fas fa-cog"></i> Portfolio</a></li>
+                    <li><a href="reservas.php"><i class="fas fa-cog"></i> Reservas</a></li>
+                    <li><a href="roles.php"><i class="fas fa-cog"></i> Roles</a></li>
+                    <li><a href="testimonios.php"><i class="fas fa-cog"></i> Testimonios</a></li>
+                    <li><a href="tipo_deporte.php"><i class="fas fa-cog"></i> Tipo deporte</a></li>
+                    <li><a href="usuarios.php"><i class="fa fa-users" aria-hidden="true"></i> Usuarios</a></li>
+                    <li><a href="zonas.php"><i class="fas fa-cog"></i> Zonas</a></li>
                 </ul>
             </nav>
         </aside>
@@ -286,99 +290,97 @@
             <header class="content-header">
                 <h1>Gestión de Base de Datos</h1>
                 <div class="user-profile">
-                    <img src="https://via.placeholder.com/40/ff6b35/ffffff?text=AD" alt="Admin Avatar">
-                    <span>Administrador Principal</span>
+                    <?php echo '<img src="'.$_SESSION["user_imagen"].'" alt="Admin Avatar">'; ?>
+                    <span>Administrador <?php echo $_SESSION["user_nom"]; ?></span>
                     <a href="index.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Salir</a>
                 </div>
             </header>
 
             <div class="content-body">
 
-                <div class="db-management-card">
-                    
+                <div class="db-management-card" id="comentarios">
                     <div class="db-management-header">
-                        <h3>Tabla: Transacciones de Entradas</h3>
+                        <h3>Tabla: Comentarios</h3>
                         <button class="btn-add"><i class="fas fa-plus"></i> Añadir Nueva Entrada</button>
                     </div>
-
                     <div class="data-table-container">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>ID Transacción</th>
-                                    <th>Cliente</th>
-                                    <th>Evento</th>
-                                    <th>Fecha Compra</th>
-                                    <th>Monto</th>
-                                    <th>Estado</th>
+                                    <th>comentario_id</th>
+                                    <th>noticia_id</th>
+                                    <th>usuario_id</th>
+                                    <th>contenido</th>
+                                    <th>fecha_comentario</th>
+                                    <th>parent_comentario_id</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>T-004591</td>
-                                    <td>Ana López</td>
-                                    <td>Clásico Fútbol - 2024</td>
-                                    <td>25/11/2025</td>
-                                    <td>€120.00</td>
-                                    <td><span class="status-badge status-completed">Completado</span></td>
-                                    <td class="action-btns">
-                                        <button class="btn-edit"><i class="fas fa-edit"></i> Editar</button>
-                                        <button class="btn-delete"><i class="fas fa-trash-alt"></i> Borrar</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>T-004590</td>
-                                    <td>Juan Pérez</td>
-                                    <td>Final EuroBasket</td>
-                                    <td>24/11/2025</td>
-                                    <td>€89.50</td>
-                                    <td><span class="status-badge status-completed">Completado</span></td>
-                                    <td class="action-btns">
-                                        <button class="btn-edit">Editar</button>
-                                        <button class="btn-delete">Borrar</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>T-004589</td>
-                                    <td>Carlos Soto</td>
-                                    <td>Liga ASOBAL</td>
-                                    <td>23/11/2025</td>
-                                    <td>€45.00</td>
-                                    <td><span class="status-badge status-pending">Pendiente</span></td>
-                                    <td class="action-btns">
-                                        <button class="btn-edit">Editar</button>
-                                        <button class="btn-delete">Borrar</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>T-004588</td>
-                                    <td>Elena Gil</td>
-                                    <td>Copa Rey Futsal</td>
-                                    <td>22/11/2025</td>
-                                    <td>€55.00</td>
-                                    <td><span class="status-badge status-refunded">Reembolsado</span></td>
-                                    <td class="action-btns">
-                                        <button class="btn-edit">Editar</button>
-                                        <button class="btn-delete">Borrar</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>T-004587</td>
-                                    <td>David Bravo</td>
-                                    <td>Liga Pro Española</td>
-                                    <td>21/11/2025</td>
-                                    <td>€95.00</td>
-                                    <td><span class="status-badge status-completed">Completado</span></td>
-                                    <td class="action-btns">
-                                        <button class="btn-edit">Editar</button>
-                                        <button class="btn-delete">Borrar</button>
-                                    </td>
-                                </tr>
+                                <?php
+                                    include_once "funciones/funciones.php";
+                                    $comentaris = llegitComentarisSencers($mysqli);
+                                    //var_dump($comentaris);
+                                    foreach($comentaris as $comentari) {
+                                        echo "<tr>
+                                            <td>".$comentari['comentario_id']."</td>
+                                            <td>".$comentari['noticia_id']."</td>
+                                            <td>".$comentari['usuario_id']."</td>
+                                            <td>".$comentari['contenido']."</td>
+                                            <td>".$comentari['fecha_comentario']."</td>
+                                            ";
+                                        if ($comentari['parent_comentario_id'] === NULL) {
+                                            echo "<td>NULL</td>";
+                                        }else {
+                                            echo "<td>".$comentari['parent_comentario_id']."</td>";
+                                        }
+                                        echo '<td class="action-btns">
+                                                <button class="btn-edit">Editar</button>
+                                                <button class="btn-delete">Borrar</button>
+                                            </td></tr>';
+                                    }
+                                ?>
                             </tbody>
                         </table>
                     </div>
-                    
+                </div>
+
+                <div class="db-management-card" id="detalleReserva">
+                    <div class="db-management-header">
+                        <h3>Tabla: detalle_reserva</h3>
+                        <button class="btn-add"><i class="fas fa-plus"></i> Añadir Nueva Entrada</button>
+                    </div>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>detalle_id</th>
+                                    <th>reserva_id</th>
+                                    <th>entrada_id</th>
+                                    <th>precio_unidad_auditoria</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    include_once "funciones/funciones.php";
+                                    $detallesReservas = llegirDatalleResercaSencer($mysqli);
+                                    foreach($detallesReservas as $detalleReserva) {
+                                        echo "<tr>
+                                            <td>".$detalleReserva['detalle_id']."</td>
+                                            <td>".$detalleReserva['reserva_id']."</td>
+                                            <td>".$detalleReserva['entrada_id']."</td>
+                                            <td>".$detalleReserva['precio_unidad_auditoria']."</td>
+                                            <td class='action-btns'>
+                                                <button class='btn-edit'>Editar</button>
+                                                <button class='btn-delete'>Borrar</button>
+                                            </td>
+                                        </tr>";
+                                    }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>

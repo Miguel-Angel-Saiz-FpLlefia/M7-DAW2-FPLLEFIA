@@ -111,3 +111,17 @@
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
+
+    function llegitComentarisSencers($mysqli) {
+        $sql = "SELECT * FROM comentarios";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function llegirDatalleResercaSencer($mysqli) {
+        $sql = "SELECT * FROM detalle_reserva";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }

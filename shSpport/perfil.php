@@ -518,10 +518,6 @@
       <aside class="sidebar">
         <ul class="sidebar-menu">
           <li><a href="#" class="active"><i class="fas fa-ticket-alt"></i> Mis Tickets</a></li>
-          <li><a href="#"><i class="fas fa-user"></i> Mi Perfil</a></li>
-          <li><a href="#"><i class="fas fa-heart"></i> Favoritos</a></li>
-          <li><a href="#"><i class="fas fa-bell"></i> Notificaciones</a></li>
-          <li><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
         </ul>
       </aside>
 
