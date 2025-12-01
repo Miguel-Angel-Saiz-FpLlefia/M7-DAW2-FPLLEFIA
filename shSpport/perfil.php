@@ -1,3 +1,7 @@
+<?php
+    include_once "../shSpport/config/config.php";
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -141,6 +145,13 @@
       color: white;
       font-size: 3rem;
       font-weight: bold;
+      overflow: hidden;
+    }
+
+    .profile-avatar-large img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .profile-info h1 {
@@ -462,28 +473,30 @@
 <body>
   <header>
     <nav>
-      <a href="index.html" class="logo"><i class="fas fa-trophy"></i> DeportesPro</a>
+      <a href="index.php" class="logo"><i class="fas fa-trophy"></i> DeportesPro</a>
       <ul class="nav-links">
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="noticias.html">Noticias</a></li>
-        <li><a href="portfolio.html">Portfolio</a></li>
-        <li><a href="testimonios.html">Testimonios</a></li>
-        <li><a href="faqs.html">FAQs</a></li>
-        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="index.php">Inicio</a></li>
+        <li><a href="noticias.php">Noticias</a></li>
+        <li><a href="portfolio.php">Portfolio</a></li>
+        <li><a href="testimonio.php">Testimonios</a></li>
+        <li><a href="faqs.php">FAQs</a></li>
+        <li><a href="contacto.php">Contacto</a></li>
       </ul>
       <div class="user-menu">
         <div class="user-avatar">JG</div>
-        <a href="index.html" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+        <a href="cerrarSesion.php" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
       </div>
     </nav>
   </header>
 
   <div class="profile-container">
     <div class="profile-header">
-      <div class="profile-avatar-large">JG</div>
+      <?php 
+        echo "<div class='profile-avatar-large'><img src='" . htmlspecialchars($_SESSION['user_imagen']) . "' alt='Avatar'></div>";  
+      ?>
       <div class="profile-info">
-        <h1>Juan García Pérez</h1>
-        <p style="color: #666;">juan.garcia@email.com</p>
+        <?php echo "<h1>$_SESSION[user_nom] $_SESSION[user_apellido]</h1>"  ?>
+        <?php echo "<p style='color: #666;'>$_SESSION[user_email]</p>" ?>
         <div class="profile-stats">
           <div class="stat-item">
             <i class="fas fa-ticket-alt"></i>
@@ -578,8 +591,8 @@
                 </div>
               </div>
               <div class="ticket-actions">
-                <button class="btn btn-primary"><i class="fas fa-qrcode"></i> Ver QR</button>
-                <button class="btn btn-outline"><i class="fas fa-download"></i> Descargar</button>
+                <a href="generarQR.php?ticket=BCN-2024-001234" class="btn btn-primary"><i class="fas fa-qrcode"></i> Ver QR</a>
+                <a href="generarQR.php?ticket=BCN-2024-001234" download class="btn btn-outline"><i class="fas fa-download"></i> Descargar</a>
               </div>
             </div>
           </div>
@@ -619,8 +632,8 @@
                 </div>
               </div>
               <div class="ticket-actions">
-                <button class="btn btn-primary"><i class="fas fa-qrcode"></i> Ver QR</button>
-                <button class="btn btn-outline"><i class="fas fa-download"></i> Descargar</button>
+                <a href="generarQR.php?ticket=MAD-2024-005678" class="btn btn-primary"><i class="fas fa-qrcode"></i> Ver QR</a>
+                <a href="generarQR.php?ticket=MAD-2024-005678" download class="btn btn-outline"><i class="fas fa-download"></i> Descargar</a>
               </div>
             </div>
           </div>
@@ -660,8 +673,8 @@
                 </div>
               </div>
               <div class="ticket-actions">
-                <button class="btn btn-primary"><i class="fas fa-qrcode"></i> Ver QR</button>
-                <button class="btn btn-outline"><i class="fas fa-download"></i> Descargar</button>
+                <a href="generarQR.php?ticket=BCN-2024-009012" class="btn btn-primary"><i class="fas fa-qrcode"></i> Ver QR</a>
+                <a href="generarQR.php?ticket=BCN-2024-009012" download class="btn btn-outline"><i class="fas fa-download"></i> Descargar</a>
               </div>
             </div>
           </div>

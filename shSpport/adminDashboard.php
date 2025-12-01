@@ -1,3 +1,7 @@
+<?php
+    include_once "../shSpport/config/config.php";
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -284,7 +288,7 @@
                 <div class="user-profile">
                     <img src="https://via.placeholder.com/40/ff6b35/ffffff?text=AD" alt="Admin Avatar">
                     <span>Administrador Principal</span>
-                    <a href="#" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Salir</a>
+                    <a href="index.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Salir</a>
                 </div>
             </header>
 

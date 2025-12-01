@@ -1,3 +1,7 @@
+<?php
+    include_once "../shSpport/config/config.php";
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -274,21 +278,30 @@
             transform: translateY(-8px);
             box-shadow: 0 15px 40px rgba(0,0,0,0.15);
         }
-
+        
         .project-image {
             height: 250px;
             width: 100%;
-            background: var(--dark-bg); /* Fondo de imagen */
+            background: var(--dark-bg);
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             overflow: hidden;
         }
         
-        .project-image i {
-            font-size: 5rem;
-            color: rgba(255, 255, 255, 0.3);
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            display: block;
+        }
+        
+        .project-image i.fa-image {
+            display: contents;
+            font-size: 0;
+        }
+        
+        .project-image i.fa-image::before {
+            display: none;
         }
 
         .project-tag {
@@ -344,22 +357,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo"><i class="fas fa-trophy"></i> DeportesPro</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="noticias.html">Noticias</a></li>
-                <li><a href="portfolio.html" class="active">Portfolio</a></li> <li><a href="testimonios.html">Testimonios</a></li>
-                <li><a href="faqs.html">FAQs</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-            </ul>
-            <div class="user-actions">
-                <a href="login.php" class="btn btn-outline">Iniciar Sesión</a>
-                <a href="register.php" class="btn btn-primary">Registrarse</a>
-            </div>
-        </nav>
-    </header>
+    <?php include_once "header.php"; ?>
 
     <section class="portfolio-hero">
         <div class="section-header" style="margin-bottom: 0;">
@@ -378,110 +376,33 @@
             <button data-filter="Fútbol">Fútbol</button>
             <button data-filter="Básquet">Básquet</button>
             <button data-filter="Balonmano">Balonmano</button>
-            <button data-filter="Otros">Otros</button>
+            <button data-filter="Fútbol sala">Fútbol sala</button>
         </div>
 
         <div class="portfolio-container">
             
-            <article class="project-card" data-category="Fútbol">
-                <div class="project-image" style="background: linear-gradient(135deg, #1a659e 0%, #004e89 100%);">
-                    <i class="fas fa-futbol"></i>
-                    <span class="project-tag">Fútbol</span>
-                </div>
-                <div class="project-content">
-                    <h3>Liga Pro Española</h3>
-                    <p>Gestión completa de ticketing para los 10 principales equipos de la Primera División, incluyendo El Clásico.</p>
-                    <div class="meta">Cobertura: <strong>Temporada 2024/2025</strong></div>
-                    <a href="#" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;">Detalles del Caso</a>
-                </div>
-            </article>
-
-            <article class="project-card" data-category="Básquet">
-                <div class="project-image" style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);">
-                    <i class="fas fa-basketball-ball"></i>
-                    <span class="project-tag">Básquet</span>
-                </div>
-                <div class="project-content">
-                    <h3>Torneo EuroBasket</h3>
-                    <p>Coordinación y venta de entradas para la fase final del torneo continental, con un 98% de satisfacción.</p>
-                    <div class="meta">Ventas: <strong>Más de 50,000 entradas</strong></div>
-                    <a href="#" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;">Detalles del Caso</a>
-                </div>
-            </article>
-
-            <article class="project-card" data-category="Balonmano">
-                <div class="project-image" style="background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);">
-                    <i class="fas fa-volleyball-ball"></i>
-                    <span class="project-tag">Balonmano</span>
-                </div>
-                <div class="project-content">
-                    <h3>ASOBAL Elite</h3>
-                    <p>Digitalización del sistema de abonos y entradas online para todos los clubes de la Liga ASOBAL.</p>
-                    <div class="meta">Implementación: <strong>Sistema Mobile-First</strong></div>
-                    <a href="#" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;">Detalles del Caso</a>
-                </div>
-            </article>
-
-            <article class="project-card" data-category="Fútbol Sala">
-                <div class="project-image" style="background: linear-gradient(135deg, #7b4397 0%, #dc2430 100%);">
-                    <i class="fas fa-running"></i>
-                    <span class="project-tag">Fútbol Sala</span>
-                </div>
-                <div class="project-content">
-                    <h3>Copa Rey Futsal</h3>
-                    <p>Gestión exclusiva de la venta de entradas para la Final Four del torneo de Copa.</p>
-                    <div class="meta">Ubicación: <strong>Sede Madrid, 2024</strong></div>
-                    <a href="#" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;">Detalles del Caso</a>
-                </div>
-            </article>
+            <?php
+                include_once "funciones/funciones.php";
+                $row = getPortfolio($mysqli);
+                foreach ($row as $proyecto) {
+                    echo '<article class="project-card" data-category="' . htmlspecialchars($proyecto['tipo']) . '">
+                            <div class="project-image">
+                                <img src="' . htmlspecialchars($proyecto['imagen_url']) . '" alt="' . htmlspecialchars($proyecto['titulo']) . '">
+                                <div class="project-tag">' . htmlspecialchars($proyecto['tipo']) . '</div>
+                            </div>
+                            <div class="project-content">
+                                <h3>' . htmlspecialchars($proyecto['titulo']) . '</h3>
+                                <p>' . htmlspecialchars($proyecto['descripcion']) . '</p>
+                                <div class="meta">Fecha: ' . htmlspecialchars($proyecto['fecha_proyecto']) . '</div>
+                            </div>
+                        </article>';
+                }
+            ?>
             
         </div>
     </section>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>DeportesPro</h3>
-                <p>Tu plataforma de confianza para adquirir entradas a los mejores eventos deportivos.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>Enlaces Rápidos</h3>
-                <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="noticias.html">Noticias</a></li>
-                    <li><a href="portfolio.html">Portfolio</a></li>
-                    <li><a href="testimonios.html">Testimonios</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Deportes</h3>
-                <ul>
-                    <li><a href="#">Fútbol</a></li>
-                    <li><a href="#">Básquet</a></li>
-                    <li><a href="#">Balonmano</a></li>
-                    <li><a href="#">Fútbol Sala</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Soporte</h3>
-                <ul>
-                    <li><a href="faqs.html">Preguntas Frecuentes</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
-                    <li><a href="#">Política de Privacidad</a></li>
-                    <li><a href="#">Términos y Condiciones</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 DeportesPro. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+    <?php include_once "footer.php"; ?>
 
     <script>
         // 1. Obtener todos los botones de filtro y los proyectos

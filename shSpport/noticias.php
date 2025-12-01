@@ -1,3 +1,7 @@
+<?php
+    include_once "../shSpport/config/config.php";
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -29,6 +33,10 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             color: var(--text-dark);
+        }
+
+        a {
+            text-decoration: none;
         }
 
         /* Header y Navegación */
@@ -336,22 +344,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo"><i class="fas fa-trophy"></i> DeportesPro</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="noticias.html" class="active">Noticias</a></li> <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="testimonios.html">Testimonios</a></li>
-                <li><a href="faqs.html">FAQs</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-            </ul>
-            <div class="user-actions">
-                <a href="login.php" class="btn btn-outline">Iniciar Sesión</a>
-                <a href="register.php" class="btn btn-primary">Registrarse</a>
-            </div>
-        </nav>
-    </header>
+    <?php include_once "header.php"; ?>
 
     <section class="news-hero">
         <div class="section-header" style="margin-bottom: 0;">
@@ -363,148 +356,36 @@
     <section class="news-section">
         <div class="news-container">
             
-            <article class="news-card">
-                <div class="news-card-image">
-                    <span class="news-tag">Fútbol</span>
-                    <i class="fas fa-futbol"></i> 
-                </div>
-                <div class="news-card-content">
-                    <h3>El Clásico Femenino Bate Récord de Asistencia Mundial</h3>
-                    <div class="news-meta">
-                        <i class="far fa-calendar-alt"></i> 15 Nov 2024
-                        <i class="fas fa-user"></i> Juan Pérez
-                    </div>
-                    <p>El encuentro entre el FC Barcelona y el Real Madrid superó los 95.000 espectadores, marcando un hito histórico en el deporte.</p>
-                    <a href="#" class="btn btn-outline">Leer Más</a>
-                </div>
-            </article>
+            <?php
+                include_once "funciones/funciones.php";
+                $noticias = llegirNoticies($mysqli);
 
-            <article class="news-card">
-                <div class="news-card-image" style="background: var(--gradient-primary);">
-                    <span class="news-tag" style="background: var(--secondary-color);">Básquet</span>
-                    <i class="fas fa-basketball-ball"></i> 
-                </div>
-                <div class="news-card-content">
-                    <h3>Lesión de la Estrella de la NBA en la Jornada Inaugural</h3>
-                    <div class="news-meta">
-                        <i class="far fa-calendar-alt"></i> 14 Nov 2024
-                        <i class="fas fa-user"></i> Ana Gómez
-                    </div>
-                    <p>El base de los Lakers se retira del partido con un esguince de tobillo, lo que podría alejarlo de las canchas por varias semanas.</p>
-                    <a href="#" class="btn btn-outline">Leer Más</a>
-                </div>
-            </article>
-
-            <article class="news-card">
-                <div class="news-card-image">
-                    <span class="news-tag">Balonmano</span>
-                    <i class="fas fa-volleyball-ball"></i> 
-                </div>
-                <div class="news-card-content">
-                    <h3>Victoria Épica: España se Clasifica para el Mundial</h3>
-                    <div class="news-meta">
-                        <i class="far fa-calendar-alt"></i> 12 Nov 2024
-                        <i class="fas fa-user"></i> Carlos Ruiz
-                    </div>
-                    <p>La selección masculina de balonmano selló su pase tras un emocionante partido de clasificación en el último minuto.</p>
-                    <a href="#" class="btn btn-outline">Leer Más</a>
-                </div>
-            </article>
-
-            <article class="news-card">
-                <div class="news-card-image" style="background: var(--gradient-primary);">
-                    <span class="news-tag" style="background: var(--secondary-color);">Fútbol Sala</span>
-                    <i class="fas fa-running"></i> 
-                </div>
-                <div class="news-card-content">
-                    <h3>Mercado de Invierno: Grandes Fichajes a la Vista</h3>
-                    <div class="news-meta">
-                        <i class="far fa-calendar-alt"></i> 11 Nov 2024
-                        <i class="fas fa-user"></i> Marta Llorca
-                    </div>
-                    <p>Los principales equipos de la LNFS buscan reforzar sus plantillas para el tramo final de la temporada.</p>
-                    <a href="#" class="btn btn-outline">Leer Más</a>
-                </div>
-            </article>
-
-            <article class="news-card">
-                <div class="news-card-image">
-                    <span class="news-tag">Fútbol</span>
-                    <i class="fas fa-trophy"></i> 
-                </div>
-                <div class="news-card-content">
-                    <h3>Análisis: ¿Quién Ganará la Champions League este Año?</h3>
-                    <div class="news-meta">
-                        <i class="far fa-calendar-alt"></i> 10 Nov 2024
-                        <i class="fas fa-user"></i> Juan Pérez
-                    </div>
-                    <p>Un repaso a los favoritos y las sorpresas de la fase de grupos del torneo más prestigioso de Europa.</p>
-                    <a href="#" class="btn btn-outline">Leer Más</a>
-                </div>
-            </article>
-
-            <article class="news-card">
-                <div class="news-card-image" style="background: var(--gradient-secondary);">
-                    <span class="news-tag">Básquet</span>
-                    <i class="fas fa-star"></i> 
-                </div>
-                <div class="news-card-content">
-                    <h3>MVP de la Semana en la ACB: El Joven Español Domina</h3>
-                    <div class="news-meta">
-                        <i class="far fa-calendar-alt"></i> 09 Nov 2024
-                        <i class="fas fa-user"></i> Ana Gómez
-                    </div>
-                    <p>Su actuación estelar le valió el reconocimiento de Jugador Más Valioso por segunda semana consecutiva.</p>
-                    <a href="#" class="btn btn-outline">Leer Más</a>
-                </div>
-            </article>
+                foreach ($noticias as $noticia) {
+                    echo '<a href="noticiaDetallada.php?id=' . htmlspecialchars($noticia['noticia_id']) . '">
+                        <article class="news-card">
+                            <div class="news-card-image">';
+                    if (!empty($noticia['imagen_url'])) {
+                        echo '<img src="' . htmlspecialchars($noticia['imagen_url']) . '" alt="' . htmlspecialchars($noticia['titulo']) . '">';
+                    } else {
+                        echo '<i class="fas fa-newspaper"></i>';
+                    }
+                    echo '</div>
+                            <div class="news-card-content">
+                                <h3>' . htmlspecialchars($noticia['titulo']) . '</h3>
+                                <div class="news-meta">
+                                    <span><i class="fas fa-calendar-alt"></i> ' . date("d M Y", strtotime($noticia['fecha_publicacion'])) . '</span>
+                                    <span><i class="fas fa-user"></i> ' . htmlspecialchars($noticia['usuario_nombre'] . ' ' . $noticia['usuario_apellido']) . '</span>
+                                </div>
+                                <p>' . htmlspecialchars($noticia['resumen']) . '</p>
+                            </div>
+                        </article>
+                        </a>';
+                }
+            ?>
 
         </div>
     </section>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>DeportesPro</h3>
-                <p>Tu plataforma de confianza para adquirir entradas a los mejores eventos deportivos.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>Enlaces Rápidos</h3>
-                <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="noticias.html">Noticias</a></li>
-                    <li><a href="portfolio.html">Portfolio</a></li>
-                    <li><a href="testimonios.html">Testimonios</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Deportes</h3>
-                <ul>
-                    <li><a href="#">Fútbol</a></li>
-                    <li><a href="#">Básquet</a></li>
-                    <li><a href="#">Balonmano</a></li>
-                    <li><a href="#">Fútbol Sala</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Soporte</h3>
-                <ul>
-                    <li><a href="faqs.html">Preguntas Frecuentes</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
-                    <li><a href="#">Política de Privacidad</a></li>
-                    <li><a href="#">Términos y Condiciones</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 DeportesPro. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+    <?php include_once "footer.php"; ?>
 </body>
 </html>

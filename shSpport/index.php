@@ -1,3 +1,8 @@
+<?php
+    include_once "../shSpport/config/config.php";
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -485,23 +490,7 @@
 </head>
 <body>
   <!-- Header -->
-  <header>
-    <nav>
-      <div class="logo"><i class="fas fa-trophy"></i> DeportesPro</div>
-      <ul class="nav-links">
-        <li><a href="#inicio">Inicio</a></li>
-        <li><a href="noticias.php">Noticias</a></li>
-        <li><a href="portfolio.php">Portfolio</a></li>
-        <li><a href="testimonio.php">Testimonios</a></li>
-        <li><a href="faqs.php">FAQs</a></li>
-        <li><a href="contacto.php">Contacto</a></li>
-      </ul>
-      <div class="user-actions">
-        <a href="login.php" class="btn btn-outline">Iniciar Sesión</a>
-        <a href="register.php" class="btn btn-primary">Registrarse</a>
-      </div>
-    </nav>
-  </header>
+  <?php include_once "header.php"; ?>
 
   <!-- Hero Section -->
   <section class="hero" id="inicio">
@@ -511,7 +500,12 @@
         <p>Accede a los mejores eventos deportivos: Fútbol, Básquet, Balonmano y Fútbol Sala. Compra tus entradas y vive experiencias únicas.</p>
         <div class="hero-actions">
           <a href="#eventos" class="btn btn-primary">Ver Eventos</a>
-          <a href="register.php" class="btn btn-outline">Crear Cuenta</a>
+          <?php
+            if (!isset($_SESSION['user_nom'])) {
+                echo '<a href="register.php" class="btn btn-outline">Crear Cuenta</a>';
+            }
+          ?>
+          
         </div>
       </div>
       <div class="hero-image">
@@ -616,131 +610,32 @@
   <!-- Eventos Destacados -->
   <section class="events-section" id="eventos">
     <div class="section-header">
-      <h2>Próximos Eventos</h2>
-      <p>No te pierdas los mejores partidos</p>
+      <h2>Últimas Noticias</h2>
+      <p>No te pierdas las ultimas noticias sobre el deporte</p>
     </div>
     <div class="events-container">
-      <div class="event-card">
-        <div class="event-header">
-          <div class="event-date"><i class="far fa-calendar"></i> 15 Dic 2024</div>
-          <h3>Final de Liga - Fútbol</h3>
-        </div>
-        <div class="event-body">
-          <h3>FC Barcelona vs Real Madrid</h3>
-          <div class="event-info">
-            <div class="event-info-item">
-              <i class="fas fa-map-marker-alt"></i>
-              <span>Camp Nou, Barcelona</span>
-            </div>
-            <div class="event-info-item">
-              <i class="fas fa-clock"></i>
-              <span>20:00h</span>
-            </div>
-            <div class="event-info-item">
-              <i class="fas fa-ticket-alt"></i>
-              <span>Desde 45€</span>
-            </div>
-          </div>
-          <a href="login.html" class="btn btn-primary">Comprar Entradas</a>
-        </div>
-      </div>
-      
-      <div class="event-card">
-        <div class="event-header">
-          <div class="event-date"><i class="far fa-calendar"></i> 18 Dic 2024</div>
-          <h3>Copa Nacional - Básquet</h3>
-        </div>
-        <div class="event-body">
-          <h3>Real Madrid vs Valencia Basket</h3>
-          <div class="event-info">
-            <div class="event-info-item">
-              <i class="fas fa-map-marker-alt"></i>
-              <span>WiZink Center, Madrid</span>
-            </div>
-            <div class="event-info-item">
-              <i class="fas fa-clock"></i>
-              <span>18:30h</span>
-            </div>
-            <div class="event-info-item">
-              <i class="fas fa-ticket-alt"></i>
-              <span>Desde 30€</span>
-            </div>
-          </div>
-          <a href="login.html" class="btn btn-primary">Comprar Entradas</a>
-        </div>
-      </div>
-
-      <div class="event-card">
-        <div class="event-header">
-          <div class="event-date"><i class="far fa-calendar"></i> 22 Dic 2024</div>
-          <h3>Liga ASOBAL - Balonmano</h3>
-        </div>
-        <div class="event-body">
-          <h3>FC Barcelona vs Ademar León</h3>
-          <div class="event-info">
-            <div class="event-info-item">
-              <i class="fas fa-map-marker-alt"></i>
-              <span>Palau Blaugrana, Barcelona</span>
-            </div>
-            <div class="event-info-item">
-              <i class="fas fa-clock"></i>
-              <span>19:00h</span>
-            </div>
-            <div class="event-info-item">
-              <i class="fas fa-ticket-alt"></i>
-              <span>Desde 25€</span>
-            </div>
-          </div>
-          <a href="login.html" class="btn btn-primary">Comprar Entradas</a>
-        </div>
-      </div>
+      <?php
+        include_once "../shSpport/funciones/funciones.php";
+        $noticias = llegirUltimesNoticies($mysqli);
+        foreach ($noticias as $noticia) {
+            echo '<div class="event-card">
+                    <div class="event-header">
+                      <div class="event-date">' . date("d M Y", strtotime($noticia['fecha_publicacion'])) . '</div>
+                      <h3>' . htmlspecialchars($noticia['titulo']) . '</h3>
+                    </div>
+                    <div class="event-body">
+                      <div class="event-info">
+                        <div class="event-info-item">
+                          <p>' . htmlspecialchars(substr($noticia['contenido'], 0, 100)) . '</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>';
+        }
+      ?>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-container">
-      <div class="footer-section">
-        <h3>DeportesPro</h3>
-        <p>Tu plataforma de confianza para adquirir entradas a los mejores eventos deportivos.</p>
-        <div class="social-links">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-youtube"></i></a>
-        </div>
-      </div>
-      <div class="footer-section">
-        <h3>Enlaces Rápidos</h3>
-        <ul>
-          <li><a href="#inicio">Inicio</a></li>
-          <li><a href="noticias.html">Noticias</a></li>
-          <li><a href="portfolio.html">Portfolio</a></li>
-          <li><a href="testimonios.html">Testimonios</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h3>Deportes</h3>
-        <ul>
-          <li><a href="#">Fútbol</a></li>
-          <li><a href="#">Básquet</a></li>
-          <li><a href="#">Balonmano</a></li>
-          <li><a href="#">Fútbol Sala</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h3>Soporte</h3>
-        <ul>
-          <li><a href="faqs.html">Preguntas Frecuentes</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
-          <li><a href="#">Política de Privacidad</a></li>
-          <li><a href="#">Términos y Condiciones</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2024 DeportesPro. Todos los derechos reservados.</p>
-    </div>
-  </footer>
+  <?php include_once "footer.php"; ?>
 </body>
 </html>

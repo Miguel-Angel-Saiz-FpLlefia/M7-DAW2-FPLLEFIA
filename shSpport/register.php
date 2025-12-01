@@ -1,3 +1,52 @@
+<?php
+  require_once('config/config.php');
+  session_start();
+
+  //Verificar si el formulario ha sido enviado
+
+  if($_SERVER['REQUEST_METHOD'] === 'POST') {
+      //1. Recoger los datos del formulario
+      $nom = $_POST['nombre'];
+      $apellido = $_POST['apellidos'];
+      $email = $_POST['email'];
+      $password = $_POST['password'];
+      $confirmPassword = $_POST['confirm-password'];
+      $imagen = $_POST['imagen'];
+
+      //Comprobar que las contraseñas coinciden
+      if($password !== $confirmPassword) {
+          die('Las contraseñas no coinciden. <a href="register.php">Volver</a>');
+      }
+
+      //2. Hasheamos la contraseña antes de guardarla
+      $password_hasheada = password_hash($password, PASSWORD_DEFAULT);
+
+      //3. Preparamos la consulta para insertar al nuevo usuario
+      $stmt = $mysqli->prepare("INSERT INTO usuarios (role_id, nombre, apellido, email, contrasena_hash, foto) VALUES (2,?,?,?,?,?)");
+
+      //4. Comprobar que la preparación tuvo éxito
+      if(!$stmt) {
+          die('error en la preparación: ' . $mysqli->error);
+      }
+
+      //5. Bindeamos los parametros
+      $stmt->bind_param('sssss', $nom, $apellido, $email, $password_hasheada, $imagen);
+
+      //6. Ejecutamos la consulta
+      if($stmt->execute()) {
+          header('Location: index.php');
+      }else {
+          echo 'Error al registrar el usuario: ' . $stmt->error;
+      }
+
+      $_SESSION['user_nom'] = $nom;
+
+      //7. Cerramos la conexion
+      $stmt->close();
+      $mysqli->close();
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -380,8 +429,8 @@
 <body>
   <header>
     <nav>
-      <a href="index.html" class="logo"><i class="fas fa-trophy"></i> DeportesPro</a>
-      <a href="index.html" class="back-link">
+      <a href="index.php" class="logo"><i class="fas fa-trophy"></i> DeportesPro</a>
+      <a href="index.php" class="back-link">
         <i class="fas fa-arrow-left"></i> Volver al inicio
       </a>
     </nav>
@@ -422,7 +471,7 @@
           <p>Completa el formulario para registrarte</p>
         </div>
 
-        <form class="register-form" action="perfil.html">
+        <form class="register-form" method="POST">
           <div class="form-row">
             <div class="form-group">
               <label for="nombre">Nombre</label>
@@ -432,10 +481,10 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="apellidos">Apellidos</label>
+              <label for="apellidos">Apellido</label>
               <div class="input-wrapper">
                 <i class="fas fa-user"></i>
-                <input type="text" id="apellidos" name="apellidos" placeholder="Pérez García" required>
+                <input type="text" id="apellidos" name="apellidos" placeholder="Pérez" required>
               </div>
             </div>
           </div>
@@ -445,37 +494,6 @@
             <div class="input-wrapper">
               <i class="fas fa-envelope"></i>
               <input type="email" id="email" name="email" placeholder="tu@email.com" required>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="telefono">Teléfono</label>
-              <div class="input-wrapper">
-                <i class="fas fa-phone"></i>
-                <input type="tel" id="telefono" name="telefono" placeholder="+34 600 000 000" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="fecha-nacimiento">Fecha de Nacimiento</label>
-              <div class="input-wrapper">
-                <i class="fas fa-calendar"></i>
-                <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="deporte">Deporte Favorito</label>
-            <div class="input-wrapper">
-              <i class="fas fa-trophy"></i>
-              <select id="deporte" name="deporte" required>
-                <option value="">Selecciona un deporte</option>
-                <option value="futbol">Fútbol</option>
-                <option value="basquet">Básquet</option>
-                <option value="balonmano">Balonmano</option>
-                <option value="futbol-sala">Fútbol Sala</option>
-              </select>
             </div>
           </div>
 
@@ -492,6 +510,16 @@
               <div class="input-wrapper">
                 <i class="fas fa-lock"></i>
                 <input type="password" id="confirm-password" name="confirm-password" placeholder="••••••••" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="imagen">URL Imagen</label>
+              <div class="input-wrapper">
+                <i class="fas fa-lock"></i>
+                <input type="text" id="imagen" name="imagen" placeholder="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/43a9f51d-f1a4-5189-920c-8d9e2a47db9a/6ed47fe4-4084-5858-9ddf-a3ed2f2e0e0a.jpg" required>
               </div>
             </div>
           </div>

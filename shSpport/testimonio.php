@@ -1,3 +1,7 @@
+<?php
+    include_once "../shSpport/config/config.php";
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -339,22 +343,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo"><i class="fas fa-trophy"></i> DeportesPro</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="noticias.html">Noticias</a></li>
-                <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="testimonios.html" class="active">Testimonios</a></li> <li><a href="faqs.html">FAQs</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-            </ul>
-            <div class="user-actions">
-                <a href="login.php" class="btn btn-outline">Iniciar Sesión</a>
-                <a href="register.php" class="btn btn-primary">Registrarse</a>
-            </div>
-        </nav>
-    </header>
+    <?php include_once "header.php"; ?>
 
     <section class="testimonials-hero">
         <div class="section-header" style="margin-bottom: 0;">
@@ -366,154 +355,39 @@
     <section class="testimonials-section">
         <div class="testimonials-container">
             
-            <div class="testimonial-card">
-                <div>
-                    <i class="fas fa-quote-left quote-icon"></i>
-                    <div class="testimonial-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"¡La mejor experiencia de compra de entradas que he tenido! El proceso fue rápido, seguro y las entradas para el clásico de fútbol llegaron inmediatamente a mi correo. ¡Totalmente recomendable!"</p>
-                </div>
-                <div class="reviewer-info">
-                    <div class="reviewer-avatar">JF</div>
-                    <div class="reviewer-details">
-                        <h4>Javier Fernández</h4>
-                        <p>Aficionado al Fútbol</p>
-                    </div>
-                </div>
-            </div>
+            <?php
+                include_once "funciones/funciones.php";
+                $testimonios = getTestimonios($mysqli);
 
-            <div class="testimonial-card">
-                <div>
-                    <i class="fas fa-quote-left quote-icon"></i>
-                    <div class="testimonial-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <p class="testimonial-text">"Pude conseguir asientos en primera fila para el partido de básquet. La interfaz de la web es muy intuitiva y el soporte al cliente resolvió una pequeña duda en minutos. Gran servicio."</p>
-                </div>
-                <div class="reviewer-info">
-                    <div class="reviewer-avatar" style="background: var(--primary-color);">AR</div>
-                    <div class="reviewer-details">
-                        <h4>Alicia Rojas</h4>
-                        <p>Amante del Básquet</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="testimonial-card">
-                <div>
-                    <i class="fas fa-quote-left quote-icon"></i>
-                    <div class="testimonial-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Comprar mis entradas de balonmano nunca fue tan sencillo. La opción de elegir mi asiento en el estadio fue un plus. Solo una sugerencia: más opciones de pago, por favor."</p>
-                </div>
-                <div class="reviewer-info">
-                    <div class="reviewer-avatar">MP</div>
-                    <div class="reviewer-details">
-                        <h4>Miguel Pardo</h4>
-                        <p>Seguidor de Balonmano</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="testimonial-card">
-                <div>
-                    <i class="fas fa-quote-left quote-icon"></i>
-                    <div class="testimonial-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"La sección de eventos de fútbol sala es excelente. Encontré justo el torneo que buscaba y el precio era el mejor del mercado. ¡Volveré a usar DeportesPro sin duda!"</p>
-                </div>
-                <div class="reviewer-info">
-                    <div class="reviewer-avatar" style="background: var(--primary-color);">CS</div>
-                    <div class="reviewer-details">
-                        <h4>Carmen Soto</h4>
-                        <p>Aficionada al Fútbol Sala</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="testimonial-card">
-                <div>
-                    <i class="fas fa-quote-left quote-icon"></i>
-                    <div class="testimonial-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"No sabía qué esperar, pero la facilidad de uso de la web y la atención al detalle en el envío de las entradas digitales superaron mis expectativas."</p>
-                </div>
-                <div class="reviewer-info">
-                    <div class="reviewer-avatar">LG</div>
-                    <div class="reviewer-details">
-                        <h4>Luis Gámez</h4>
-                        <p>Cliente Recurrente</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="testimonial-card">
-                <div>
-                    <i class="fas fa-quote-left quote-icon"></i>
-                    <div class="testimonial-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <p class="testimonial-text">"Excelente plataforma. Me encanta la forma en que organizan los eventos por deporte. Hizo que encontrar el partido perfecto fuera muy sencillo."</p>
-                </div>
-                <div class="reviewer-info">
-                    <div class="reviewer-avatar" style="background: var(--secondary-color);">EB</div>
-                    <div class="reviewer-details">
-                        <h4>Elena Blasco</h4>
-                        <p>Compradora de Abonos</p>
-                    </div>
-                </div>
-            </div>
+                foreach ($testimonios as $testimonio) {
+                    $iniciales = mb_strtoupper(mb_substr($testimonio['nombre'], 0, 1) . mb_substr($testimonio['apellido'], 0, 1));
+                    
+                    // Generar las estrellas
+                    $estrellas = '';
+                    for ($i = 0; $i < $testimonio['puntuacion']; $i++) {
+                        $estrellas .= '<i class="fas fa-star"></i>';
+                    }
+                    
+                    echo '<div class="testimonial-card">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <div class="testimonial-rating">' . $estrellas . '</div>
+                            <div class="testimonial-text">"' . htmlspecialchars($testimonio['testimonio']) . '"</div>
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">' . htmlspecialchars($iniciales) . '</div>
+                                <div class="reviewer-details">
+                                    <h4>' . htmlspecialchars($testimonio['nombre'] . ' ' . $testimonio['apellido']) . '</h4>
+                                    <p>' . htmlspecialchars($testimonio['cargo']) . '</p>
+                                </div>
+                            </div>
+                        </div>';
+                }
+            ?>
 
         </div>
     </section>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>DeportesPro</h3>
-                <p>Tu plataforma de confianza para adquirir entradas a los mejores eventos deportivos.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>Enlaces Rápidos</h3>
-                <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="noticias.html">Noticias</a></li>
-                    <li><a href="portfolio.html">Portfolio</a></li>
-                    <li><a href="testimonios.html">Testimonios</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Deportes</h3>
-                <ul>
-                    <li><a href="#">Fútbol</a></li>
-                    <li><a href="#">Básquet</a></li>
-                    <li><a href="#">Balonmano</a></li>
-                    <li><a href="#">Fútbol Sala</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Soporte</h3>
-                <ul>
-                    <li><a href="faqs.html">Preguntas Frecuentes</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
-                    <li><a href="#">Política de Privacidad</a></li>
-                    <li><a href="#">Términos y Condiciones</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 DeportesPro. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+    <?php include_once "footer.php"; ?>
 </body>
 </html>

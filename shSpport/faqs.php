@@ -1,3 +1,7 @@
+<?php
+    include_once "../shSpport/config/config.php";
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -340,22 +344,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo"><i class="fas fa-trophy"></i> DeportesPro</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="noticias.html">Noticias</a></li>
-                <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="testimonios.html">Testimonios</a></li>
-                <li><a href="faqs.html" class="active">FAQs</a></li> <li><a href="contacto.html">Contacto</a></li>
-            </ul>
-            <div class="user-actions">
-                <a href="login.php" class="btn btn-outline">Iniciar Sesión</a>
-                <a href="register.php" class="btn btn-primary">Registrarse</a>
-            </div>
-        </nav>
-    </header>
+    <?php include_once "header.php"; ?>
 
     <section class="faqs-hero">
         <div class="section-header" style="margin-bottom: 0;">
@@ -366,56 +355,22 @@
 
     <section class="faqs-section">
         <div class="section-header">
-            <h2>Gestión de Entradas y Eventos</h2>
+            <h2>Preguntas más frecuentes:</h2>
         </div>
         
         <div class="faqs-container">
             
-            <details class="faq-item">
-                <summary class="faq-question">¿Cómo puedo comprar entradas en su plataforma?</summary>
-                <div class="faq-answer">
-                    El proceso es muy sencillo: navegue a la sección "Eventos", seleccione el deporte y el partido de su interés. Elija sus asientos en el mapa interactivo, añada al carrito y complete el pago de forma segura. Recibirá sus entradas digitales inmediatamente en su correo electrónico.
-                </div>
-            </details>
+            <?php
+                include_once "funciones/funciones.php";
+                $faqs = getFaqs($mysqli);
 
-            <details class="faq-item">
-                <summary class="faq-question">¿Son mis entradas digitales válidas para acceder al estadio?</summary>
-                <div class="faq-answer">
-                    Sí, todas nuestras entradas son 100% digitales y válidas. Puede presentarlas directamente en su teléfono móvil en los puntos de acceso del evento. No es necesario imprimir (a menos que se indique lo contrario por el organizador, lo cual es raro).
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-question">¿Qué sucede si un evento se cancela o pospone?</summary>
-                <div class="faq-answer">
-                    Si un evento se cancela, se le reembolsará el importe total de las entradas automáticamente. Si se pospone, sus entradas serán válidas para la nueva fecha. Si no puede asistir a la nueva fecha, tendrá la opción de solicitar un reembolso. Le notificaremos por correo electrónico sobre cualquier cambio.
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-question">¿Puedo devolver o cambiar mis entradas una vez compradas?</summary>
-                <div class="faq-answer">
-                    Generalmente, todas las ventas son finales. Sin embargo, en DeportesPro ofrecemos un seguro de cancelación opcional durante la compra que le permite devolver entradas bajo ciertas circunstancias (enfermedad, trabajo, etc.). Por favor, revise nuestra política de términos y condiciones para más detalles.
-                </div>
-            </details>
-            
-            <div class="section-header" style="margin-top: 4rem;">
-                <h2>Cuenta y Seguridad</h2>
-            </div>
-            
-            <details class="faq-item">
-                <summary class="faq-question">¿Cómo protegen mis datos personales y de pago?</summary>
-                <div class="faq-answer">
-                    Utilizamos cifrado SSL de última generación y cumplimos con la normativa GDPR. Los datos de pago se procesan a través de pasarelas de pago certificadas (Stripe/PayPal), lo que significa que DeportesPro nunca almacena la información completa de su tarjeta de crédito.
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-question">Olvidé mi contraseña, ¿cómo la recupero?</summary>
-                <div class="faq-answer">
-                    En la página de "Iniciar Sesión", haga clic en "¿Olvidaste tu contraseña?". Introduzca el correo electrónico asociado a su cuenta y le enviaremos un enlace de restablecimiento de contraseña.
-                </div>
-            </details>
+                foreach ($faqs as $faq) {
+                    echo '<details class="faq-item">
+                            <summary class="faq-question">' . htmlspecialchars($faq['pregunta']) . '</summary>
+                            <div class="faq-answer">' . htmlspecialchars($faq['respuesta']) . '</div>
+                        </details>';
+                }
+            ?>
             
         </div>
         
@@ -426,49 +381,6 @@
         </div>
     </section>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>DeportesPro</h3>
-                <p>Tu plataforma de confianza para adquirir entradas a los mejores eventos deportivos.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>Enlaces Rápidos</h3>
-                <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="noticias.html">Noticias</a></li>
-                    <li><a href="portfolio.html">Portfolio</a></li>
-                    <li><a href="testimonios.html">Testimonios</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Deportes</h3>
-                <ul>
-                    <li><a href="#">Fútbol</a></li>
-                    <li><a href="#">Básquet</a></li>
-                    <li><a href="#">Balonmano</a></li>
-                    <li><a href="#">Fútbol Sala</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Soporte</h3>
-                <ul>
-                    <li><a href="faqs.html">Preguntas Frecuentes</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
-                    <li><a href="#">Política de Privacidad</a></li>
-                    <li><a href="#">Términos y Condiciones</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 DeportesPro. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+    <?php include_once "footer.php"; ?>
 </body>
 </html>

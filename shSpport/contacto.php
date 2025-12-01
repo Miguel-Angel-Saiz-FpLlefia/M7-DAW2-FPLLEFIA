@@ -1,3 +1,7 @@
+<?php
+    include_once "../shSpport/config/config.php";
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -350,22 +354,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo"><i class="fas fa-trophy"></i> DeportesPro</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="noticias.html">Noticias</a></li>
-                <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="testimonios.html">Testimonios</a></li>
-                <li><a href="faqs.html">FAQs</a></li>
-                <li><a href="contacto.html" class="active">Contacto</a></li> </ul>
-            <div class="user-actions">
-                <a href="login.php" class="btn btn-outline">Iniciar Sesión</a>
-                <a href="register.php" class="btn btn-primary">Registrarse</a>
-            </div>
-        </nav>
-    </header>
+    <?php include_once "header.php"; ?>
 
     <section class="contact-hero">
         <div class="section-header" style="margin-bottom: 0;">
@@ -449,49 +438,6 @@
             </div>
     </section>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>DeportesPro</h3>
-                <p>Tu plataforma de confianza para adquirir entradas a los mejores eventos deportivos.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>Enlaces Rápidos</h3>
-                <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="noticias.html">Noticias</a></li>
-                    <li><a href="portfolio.html">Portfolio</a></li>
-                    <li><a href="testimonios.html">Testimonios</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Deportes</h3>
-                <ul>
-                    <li><a href="#">Fútbol</a></li>
-                    <li><a href="#">Básquet</a></li>
-                    <li><a href="#">Balonmano</a></li>
-                    <li><a href="#">Fútbol Sala</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Soporte</h3>
-                <ul>
-                    <li><a href="faqs.html">Preguntas Frecuentes</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
-                    <li><a href="#">Política de Privacidad</a></li>
-                    <li><a href="#">Términos y Condiciones</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 DeportesPro. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+    <?php include_once "footer.php"; ?>
 </body>
 </html>

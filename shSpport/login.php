@@ -1,3 +1,57 @@
+<?php
+  include_once 'config/config.php';
+
+  session_start();
+  if (isset($_SESSION['user_id'])) {
+      header('Location: index.php');
+      exit();
+  }else {
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        //2. Recoger los datos del formulario
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        //3. Preparar la consulta para obtener el usuario por email
+        $smtp = $mysqli->prepare("SELECT usuario_id, nombre, apellido, email, contrasena_hash, role_id, foto FROM usuarios WHERE email = ?");
+
+        //4. Comprobar que la preparacion tuvo exito
+        if(!$smtp) {
+            die('Error en la preparación: ' . $mysqli->error);
+        }
+
+        //5. Bindear los parametros
+        $smtp->bind_param('s', $email);
+
+        //6. Ejecutamos la consulta
+        $smtp->execute();
+
+        //7. Obtener el reusltado
+        $result = $smtp->get_result();
+
+        //8. Compruebo si se encontro un usuario
+        if($result->num_rows === 1) {
+            $user = $result->fetch_assoc();
+        }
+
+        //9. Verificar la contraseña
+        if(password_verify($password, $user['contrasena_hash'])) {
+            //10. Iniciar session y guardar datos en la sesion
+            $_SESSION['user_id'] = $user['usuario_id'];
+            $_SESSION['user_nom'] = $user['nombre'];
+            $_SESSION['user_apellido'] = $user['apellido'];
+            $_SESSION['user_email'] = $user['email'];
+            $_SESSION['user_rol'] = $user['role_id'];
+            $_SESSION['user_imagen'] = $user['foto'];
+            header('Location: index.php');
+            exit();
+        } else {
+            echo "Contraseña incorrecta";
+        }
+    }
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -378,8 +432,8 @@
   <!-- Header -->
   <header>
     <nav>
-      <a href="index.html" class="logo"><i class="fas fa-trophy"></i> DeportesPro</a>
-      <a href="index.html" class="back-link">
+      <a href="index.php" class="logo"><i class="fas fa-trophy"></i> DeportesPro</a>
+      <a href="index.php" class="back-link">
         <i class="fas fa-arrow-left"></i> Volver al inicio
       </a>
     </nav>
@@ -410,7 +464,7 @@
           <p>Accede a tu cuenta</p>
         </div>
 
-        <form class="login-form" action="perfil.html">
+        <form class="login-form" method="POST">
           <div class="form-group">
             <label for="email">Correo Electrónico</label>
             <div class="input-wrapper">
