@@ -125,3 +125,80 @@
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
+
+    function llegirentradesSencer($mysqli) {
+        $sql = "SELECT * FROM entradas";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function llegirEventosSencer($mysqli) {
+        $sql = "SELECT * FROM eventos";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function llegirFaqsSencer($mysqli) {
+        $sql = "SELECT * FROM faqs";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function llegirNoticiasSencer($mysqli) {
+        $sql = "SELECT * FROM noticias";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function llegirPortfolioSencer($mysqli) {
+        $sql = "SELECT * FROM portfolio";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function llegirReservasSencer($mysqli) {
+        $sql = "SELECT * FROM reservas";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function llegirRolesSencer($mysqli) {
+        $sql = "SELECT * FROM roles";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function llegirTestimoniosSencer($mysqli) {
+        $sql = "SELECT * FROM testimonios";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function llegirTipoDeporteSencer($mysqli) {
+        $sql = "SELECT * FROM tipoDeporte";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function llegirUsuarisSencer($mysqli) {
+        $sql = "SELECT * FROM usuarios";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function llegirZonasSencer($mysqli) {
+        $sql = "SELECT * FROM zonas";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
