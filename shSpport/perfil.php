@@ -101,6 +101,13 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
+      overflow: hidden;
+    }
+
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .btn-logout {
@@ -448,6 +455,146 @@
       font-size: 0.9rem;
     }
 
+    /* Estilos para edición de perfil */
+    .edit-profile-form {
+      max-width: 600px;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+    }
+
+    .form-group .input-icon {
+      position: relative;
+    }
+
+    .form-group .input-icon i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+    }
+
+    .form-group .input-icon input {
+      padding-left: 2.8rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .avatar-upload {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--light-bg);
+      border-radius: 15px;
+    }
+
+    .avatar-preview {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .avatar-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-preview i {
+      font-size: 2.5rem;
+      color: white;
+    }
+
+    .avatar-info h4 {
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+    }
+
+    .avatar-info p {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.8rem;
+    }
+
+    .alert {
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .alert-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .password-section {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 2px solid #e0e0e0;
+    }
+
+    .password-section h3 {
+      margin-bottom: 1.5rem;
+      color: var(--secondary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
     @media (max-width: 968px) {
       .profile-content {
         grid-template-columns: 1fr;
@@ -468,6 +615,14 @@
       .nav-links {
         display: none;
       }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -484,7 +639,7 @@
         <li><a href="contacto.php">Contacto</a></li>
       </ul>
       <div class="user-menu">
-        <div class="user-avatar">JG</div>
+        <div class="user-avatar"><img src="<?php echo htmlspecialchars($_SESSION['user_imagen']); ?>" alt="Avatar"></div>
         <a href="cerrarSesion.php" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
       </div>
     </nav>
@@ -518,11 +673,201 @@
     <div class="profile-content">
       <aside class="sidebar">
         <ul class="sidebar-menu">
-          <li><a href="#" class="active"><i class="fas fa-ticket-alt"></i> Mis Tickets</a></li>
+          <?php $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'tickets'; ?>
+          <li><a href="perfil.php?seccion=tickets" class="<?php echo $seccion == 'tickets' ? 'active' : ''; ?>"><i class="fas fa-ticket-alt"></i> Mis Tickets</a></li>
+          <li><a href="perfil.php?seccion=editar" class="<?php echo $seccion == 'editar' ? 'active' : ''; ?>"><i class="fas fa-user-edit"></i> Editar Perfil</a></li>
         </ul>
       </aside>
 
       <main class="main-content">
+        <?php if ($seccion == 'editar'): ?>
+        <!-- SECCIÓN EDITAR PERFIL -->
+        <h2 class="section-title">
+          <i class="fas fa-user-edit"></i>
+          Editar Perfil
+        </h2>
+
+        <?php
+        // Procesar formulario de edición
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_perfil'])) {
+            $nombre = trim($_POST['nombre']);
+            $apellido = trim($_POST['apellido']);
+            $email = trim($_POST['email']);
+            $imagen = trim($_POST['imagen']);
+            $usuario_id = $_SESSION['user_id'];
+            
+            // Actualizar datos en la base de datos
+            $sql = "UPDATE usuarios SET nombre = ?, apellido = ?, email = ?, foto = ? WHERE usuario_id = ?";
+            $stmt = $mysqli->prepare($sql);
+            
+            if ($stmt) {
+                $stmt->bind_param("ssssi", $nombre, $apellido, $email, $imagen, $usuario_id);
+                
+                if ($stmt->execute()) {
+                    // Actualizar datos de sesión
+                    $_SESSION['user_nom'] = $nombre;
+                    $_SESSION['user_apellido'] = $apellido;
+                    $_SESSION['user_email'] = $email;
+                    $_SESSION['user_imagen'] = $imagen;
+                    
+                    echo "<div class='alert alert-success'><i class='fas fa-check-circle'></i> ¡Perfil actualizado correctamente!</div>";
+                } else {
+                    echo "<div class='alert alert-error'><i class='fas fa-exclamation-circle'></i> Error al actualizar el perfil.</div>";
+                }
+                $stmt->close();
+            }
+        }
+        
+        // Procesar cambio de contraseña
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cambiar_password'])) {
+            $password_actual = $_POST['password_actual'];
+            $password_nueva = $_POST['password_nueva'];
+            $password_confirmar = $_POST['password_confirmar'];
+            $usuario_id = $_SESSION['user_id'];
+            
+            // Verificar contraseña actual
+            $sql = "SELECT contrasena_hash FROM usuarios WHERE usuario_id = ?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("i", $usuario_id);
+            $stmt->execute();
+            $result = $stmt->get_result()->fetch_assoc();
+            
+            if (password_verify($password_actual, $result['contrasena_hash'])) {
+                if ($password_nueva === $password_confirmar) {
+                    if (strlen($password_nueva) >= 6) {
+                        $password_hash = password_hash($password_nueva, PASSWORD_DEFAULT);
+                        $sql = "UPDATE usuarios SET contrasena_hash = ? WHERE usuario_id = ?";
+                        $stmt = $mysqli->prepare($sql);
+                        $stmt->bind_param("si", $password_hash, $usuario_id);
+                        
+                        if ($stmt->execute()) {
+                            echo "<div class='alert alert-success'><i class='fas fa-check-circle'></i> ¡Contraseña actualizada correctamente!</div>";
+                        } else {
+                            echo "<div class='alert alert-error'><i class='fas fa-exclamation-circle'></i> Error al actualizar la contraseña.</div>";
+                        }
+                    } else {
+                        echo "<div class='alert alert-error'><i class='fas fa-exclamation-circle'></i> La contraseña debe tener al menos 6 caracteres.</div>";
+                    }
+                } else {
+                    echo "<div class='alert alert-error'><i class='fas fa-exclamation-circle'></i> Las contraseñas nuevas no coinciden.</div>";
+                }
+            } else {
+                echo "<div class='alert alert-error'><i class='fas fa-exclamation-circle'></i> La contraseña actual es incorrecta.</div>";
+            }
+        }
+        ?>
+
+        <div class="edit-profile-form">
+          <!-- Avatar Upload -->
+          <div class="avatar-upload">
+            <div class="avatar-preview">
+              <?php if (!empty($_SESSION['user_imagen'])): ?>
+                <img src="<?php echo htmlspecialchars($_SESSION['user_imagen']); ?>" alt="Avatar">
+              <?php else: ?>
+                <i class="fas fa-user"></i>
+              <?php endif; ?>
+            </div>
+            <div class="avatar-info">
+              <h4>Foto de Perfil</h4>
+              <p>Introduce la URL de tu imagen de perfil</p>
+            </div>
+          </div>
+
+          <!-- Formulario de datos personales -->
+          <form method="POST" action="perfil.php?seccion=editar">
+            <div class="form-group">
+              <label for="imagen"><i class="fas fa-image"></i> URL de la imagen</label>
+              <div class="input-icon">
+                <i class="fas fa-link"></i>
+                <input type="url" id="imagen" name="imagen" 
+                       value="<?php echo htmlspecialchars($_SESSION['user_imagen'] ?? ''); ?>" 
+                       placeholder="https://ejemplo.com/mi-foto.jpg">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="nombre"><i class="fas fa-user"></i> Nombre</label>
+                <div class="input-icon">
+                  <i class="fas fa-user"></i>
+                  <input type="text" id="nombre" name="nombre" 
+                         value="<?php echo htmlspecialchars($_SESSION['user_nom'] ?? ''); ?>" 
+                         required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="apellido"><i class="fas fa-user"></i> Apellido</label>
+                <div class="input-icon">
+                  <i class="fas fa-user"></i>
+                  <input type="text" id="apellido" name="apellido" 
+                         value="<?php echo htmlspecialchars($_SESSION['user_apellido'] ?? ''); ?>" 
+                         required>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email"><i class="fas fa-envelope"></i> Correo Electrónico</label>
+              <div class="input-icon">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" name="email" 
+                       value="<?php echo htmlspecialchars($_SESSION['user_email'] ?? ''); ?>" 
+                       required>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" name="guardar_perfil" class="btn btn-primary">
+                <i class="fas fa-save"></i> Guardar Cambios
+              </button>
+              <a href="perfil.php?seccion=tickets" class="btn btn-outline">
+                <i class="fas fa-times"></i> Cancelar
+              </a>
+            </div>
+          </form>
+
+          <!-- Sección cambiar contraseña -->
+          <div class="password-section">
+            <h3><i class="fas fa-lock"></i> Cambiar Contraseña</h3>
+            <form method="POST" action="perfil.php?seccion=editar">
+              <div class="form-group">
+                <label for="password_actual">Contraseña Actual</label>
+                <div class="input-icon">
+                  <i class="fas fa-lock"></i>
+                  <input type="password" id="password_actual" name="password_actual" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="password_nueva">Nueva Contraseña</label>
+                  <div class="input-icon">
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="password_nueva" name="password_nueva" 
+                           minlength="6" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="password_confirmar">Confirmar Contraseña</label>
+                  <div class="input-icon">
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="password_confirmar" name="password_confirmar" 
+                           minlength="6" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" name="cambiar_password" class="btn btn-danger">
+                  <i class="fas fa-key"></i> Cambiar Contraseña
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <?php else: ?>
+        <!-- SECCIÓN MIS TICKETS -->
         <h2 class="section-title">
           <i class="fas fa-ticket-alt"></i>
           Gestión de Tickets
@@ -638,6 +983,7 @@
             }
           ?>
         </div>
+        <?php endif; ?>
       </main>
     </div>
   </div>
