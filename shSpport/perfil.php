@@ -1,5 +1,6 @@
 <?php
     include_once "../shSpport/config/config.php";
+    include_once "funciones/funciones.php";
     session_start();
 ?>
 <!DOCTYPE html>
@@ -500,11 +501,11 @@
         <div class="profile-stats">
           <div class="stat-item">
             <i class="fas fa-ticket-alt"></i>
-            <span><strong>12</strong> Tickets</span>
+            <span><strong><?php echo contarTicketsPerPersona($mysqli, $_SESSION['user_id']); ?></strong> Tickets</span>
           </div>
           <div class="stat-item">
             <i class="fas fa-calendar-check"></i>
-            <span><strong>8</strong> Eventos Asistidos</span>
+            <span><strong><?php echo contarTicketsTerminados($mysqli, $_SESSION['user_id']); ?></strong> Eventos Asistidos</span>
           </div>
           <div class="stat-item">
             <i class="fas fa-star"></i>
@@ -530,190 +531,112 @@
         <div class="stats-cards">
           <div class="stat-card">
             <i class="fas fa-ticket-alt"></i>
-            <h3>12</h3>
+            <h3><?php echo contarTicketsPerPersona($mysqli, $_SESSION['user_id']); ?></h3>
             <p>Total Tickets</p>
           </div>
           <div class="stat-card">
             <i class="fas fa-clock"></i>
-            <h3>5</h3>
+            <h3><?php echo contarTicketsProximos($mysqli, $_SESSION['user_id']); ?></h3>
             <p>Próximos Eventos</p>
           </div>
           <div class="stat-card">
             <i class="fas fa-check-circle"></i>
-            <h3>7</h3>
+            <h3><?php echo contarTicketsTerminados($mysqli, $_SESSION['user_id']); ?></h3>
             <p>Tickets Usados</p>
           </div>
         </div>
 
         <div class="tabs">
-          <button class="tab active">Próximos Eventos</button>
-          <button class="tab">Histórico</button>
-          <button class="tab">Pendientes</button>
+          <button class="tab <?php echo (!isset($_GET['tab']) || $_GET['tab'] == 'proximos') ? 'active' : ''; ?>" onclick="window.location.href='perfil.php?tab=proximos'">Próximos Eventos</button>
+          <button class="tab <?php echo (isset($_GET['tab']) && $_GET['tab'] == 'historico') ? 'active' : ''; ?>" onclick="window.location.href='perfil.php?tab=historico'">Histórico</button>
+          <button class="tab <?php echo (isset($_GET['tab']) && $_GET['tab'] == 'finalizados') ? 'active' : ''; ?>" onclick="window.location.href='perfil.php?tab=finalizados'">Finalizados</button>
         </div>
 
         <div class="tickets-grid">
-          <!-- Ticket 1 -->
-          <div class="ticket-card">
-            <div class="ticket-header">
-              <span class="ticket-status status-active">Activo</span>
-              <div class="ticket-sport">
-                <i class="fas fa-futbol"></i>
-                <span>Fútbol</span>
-              </div>
-              <div class="ticket-title">FC Barcelona vs Real Madrid</div>
-              <p>Final de Liga</p>
-            </div>
-            <div class="ticket-body">
-              <div class="ticket-info">
-                <div class="ticket-info-item">
-                  <i class="fas fa-calendar-alt"></i>
-                  <span>15 Diciembre 2024</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-clock"></i>
-                  <span>20:00h</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>Camp Nou, Barcelona</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-chair"></i>
-                  <span>Sector A - Fila 12 - Asiento 15</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-barcode"></i>
-                  <span>Código: BCN-2024-001234</span>
-                </div>
-              </div>
-              <div class="ticket-actions">
-                <a href="generarQR.php?ticket=BCN-2024-001234" class="btn btn-primary"><i class="fas fa-qrcode"></i> Ver QR</a>
-                <a href="generarQR.php?ticket=BCN-2024-001234" download class="btn btn-outline"><i class="fas fa-download"></i> Descargar</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Ticket 2 -->
-          <div class="ticket-card">
-            <div class="ticket-header" style="background: var(--gradient-primary);">
-              <span class="ticket-status status-active">Activo</span>
-              <div class="ticket-sport">
-                <i class="fas fa-basketball-ball"></i>
-                <span>Básquet</span>
-              </div>
-              <div class="ticket-title">Real Madrid vs Valencia Basket</div>
-              <p>Copa Nacional</p>
-            </div>
-            <div class="ticket-body">
-              <div class="ticket-info">
-                <div class="ticket-info-item">
-                  <i class="fas fa-calendar-alt"></i>
-                  <span>18 Diciembre 2024</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-clock"></i>
-                  <span>18:30h</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>WiZink Center, Madrid</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-chair"></i>
-                  <span>Sector B - Fila 8 - Asiento 20</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-barcode"></i>
-                  <span>Código: MAD-2024-005678</span>
-                </div>
-              </div>
-              <div class="ticket-actions">
-                <a href="generarQR.php?ticket=MAD-2024-005678" class="btn btn-primary"><i class="fas fa-qrcode"></i> Ver QR</a>
-                <a href="generarQR.php?ticket=MAD-2024-005678" download class="btn btn-outline"><i class="fas fa-download"></i> Descargar</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Ticket 3 -->
-          <div class="ticket-card">
-            <div class="ticket-header">
-              <span class="ticket-status status-active">Activo</span>
-              <div class="ticket-sport">
-                <i class="fas fa-volleyball-ball"></i>
-                <span>Balonmano</span>
-              </div>
-              <div class="ticket-title">FC Barcelona vs Ademar León</div>
-              <p>Liga ASOBAL</p>
-            </div>
-            <div class="ticket-body">
-              <div class="ticket-info">
-                <div class="ticket-info-item">
-                  <i class="fas fa-calendar-alt"></i>
-                  <span>22 Diciembre 2024</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-clock"></i>
-                  <span>19:00h</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>Palau Blaugrana, Barcelona</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-chair"></i>
-                  <span>Sector C - Fila 5 - Asiento 10</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-barcode"></i>
-                  <span>Código: BCN-2024-009012</span>
-                </div>
-              </div>
-              <div class="ticket-actions">
-                <a href="generarQR.php?ticket=BCN-2024-009012" class="btn btn-primary"><i class="fas fa-qrcode"></i> Ver QR</a>
-                <a href="generarQR.php?ticket=BCN-2024-009012" download class="btn btn-outline"><i class="fas fa-download"></i> Descargar</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Ticket 4 -->
-          <div class="ticket-card">
-            <div class="ticket-header" style="background: var(--gradient-primary);">
-              <span class="ticket-status status-pending">Pendiente</span>
-              <div class="ticket-sport">
-                <i class="fas fa-running"></i>
-                <span>Fútbol Sala</span>
-              </div>
-              <div class="ticket-title">Inter Movistar vs ElPozo Murcia</div>
-              <p>Primera División</p>
-            </div>
-            <div class="ticket-body">
-              <div class="ticket-info">
-                <div class="ticket-info-item">
-                  <i class="fas fa-calendar-alt"></i>
-                  <span>28 Diciembre 2024</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-clock"></i>
-                  <span>17:00h</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>Jorge Garbajosa, Madrid</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-chair"></i>
-                  <span>Pendiente de asignación</span>
-                </div>
-                <div class="ticket-info-item">
-                  <i class="fas fa-barcode"></i>
-                  <span>Código: MAD-2024-012345</span>
-                </div>
-              </div>
-              <div class="ticket-actions">
-                <button class="btn btn-primary" disabled><i class="fas fa-clock"></i> Pendiente de Pago</button>
-              </div>
-            </div>
-          </div>
+          <?php
+            // Determinar qué pestaña está activa
+            $tab = isset($_GET['tab']) ? $_GET['tab'] : 'proximos';
+            
+            // Obtener los tickets según la pestaña
+            switch ($tab) {
+                case 'historico':
+                    $tickets = getTicketsHistorico($mysqli, $_SESSION['user_id']);
+                    break;
+                case 'finalizados':
+                    $tickets = getTicketsFinalizados($mysqli, $_SESSION['user_id']);
+                    break;
+                default:
+                    $tickets = getTicketsProximos($mysqli, $_SESSION['user_id']);
+                    break;
+            }
+            
+            // Iconos de deportes
+            $iconosDeporte = [
+                'Fútbol' => 'fa-futbol',
+                'Baloncesto' => 'fa-basketball-ball',
+                'Tenis' => 'fa-table-tennis',
+                'Balonmano' => 'fa-volleyball-ball',
+                'Natación' => 'fa-swimmer',
+                'Atletismo' => 'fa-running',
+                'Ciclismo' => 'fa-biking',
+                'default' => 'fa-trophy'
+            ];
+            
+            if (empty($tickets)) {
+                echo "<div class='empty-state'>
+                        <i class='fas fa-ticket-alt'></i>
+                        <h3>No hay tickets</h3>
+                        <p>No tienes tickets en esta categoría.</p>
+                        <a href='portfolio.php' class='btn btn-primary'>Explorar eventos</a>
+                      </div>";
+            } else {
+                foreach ($tickets as $ticket) {
+                    $icono = $iconosDeporte[$ticket['deporte_tipo']] ?? $iconosDeporte['default'];
+                    $esActivo = $ticket['es_activo'] == 1;
+                    $statusClass = $esActivo ? 'status-active' : 'status-used';
+                    $statusText = $esActivo ? 'Activo' : 'Finalizado';
+                    $fecha = date('d M Y', strtotime($ticket['evento_fecha']));
+                    $hora = date('H:i', strtotime($ticket['evento_hora']));
+                    $codigoQR = $ticket['codigo_qr'] ?? 'TKT-' . $ticket['reserva_id'];
+                    
+                    echo "
+                    <div class='ticket-card'>
+                      <div class='ticket-header'>
+                        <div class='ticket-sport'>
+                          <i class='fas {$icono}'></i>
+                          <span>" . htmlspecialchars($ticket['deporte_tipo'] ?? 'Deporte') . "</span>
+                        </div>
+                        <h3 class='ticket-title'>" . htmlspecialchars($ticket['evento_nombre']) . "</h3>
+                        <div class='ticket-status {$statusClass}'>{$statusText}</div>
+                      </div>
+                      <div class='ticket-body'>
+                        <div class='ticket-info'>
+                          <div class='ticket-info-item'>
+                            <i class='fas fa-calendar-alt'></i>
+                            <span>Fecha: {$fecha}</span>
+                          </div>
+                          <div class='ticket-info-item'>
+                            <i class='fas fa-clock'></i>
+                            <span>Hora: {$hora}h</span>
+                          </div>
+                          <div class='ticket-info-item'>
+                            <i class='fas fa-map-marker-alt'></i>
+                            <span>" . htmlspecialchars($ticket['ubicacion'] ?? 'Por determinar') . "</span>
+                          </div>
+                          <div class='ticket-info-item'>
+                            <i class='fas fa-barcode'></i>
+                            <span>Código: " . htmlspecialchars($codigoQR) . "</span>
+                          </div>
+                        </div>
+                        <div class='ticket-actions'>
+                          <a href='generarQR.php?ticket=" . urlencode($codigoQR) . "' class='btn btn-primary'><i class='fas fa-qrcode'></i> Ver QR</a>
+                          <a href='generarQR.php?ticket=" . urlencode($codigoQR) . "' class='btn btn-outline'><i class='fas fa-download'></i> Descargar</a>
+                        </div>
+                      </div>
+                    </div>";
+                }
+            }
+          ?>
         </div>
       </main>
     </div>

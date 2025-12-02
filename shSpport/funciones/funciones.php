@@ -202,3 +202,77 @@
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
+
+    function contarTicketsPerPersona($mysqli, $id_usuario) {
+        $sql = "SELECT COUNT(*) AS total_tickets FROM reservas where usuario_id = ?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return $result['total_tickets'];
+    }
+
+    function contarTicketsTerminados($mysqli, $id_usuario) {
+        $sql = "SELECT COUNT(*) AS total_tickets_terminados 
+                FROM reservas r
+                INNER JOIN entradas e ON r.entrada_id = e.entrada_id
+                Inner JOIN eventos ev ON e.evento_id = ev.evento_id
+                WHERE r.usuario_id = ? AND ev.es_activo = 0";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return $result['total_tickets_terminados'];
+    }
+
+    function contarTicketsProximos($mysqli, $id_usuario) {
+        $sql = "SELECT COUNT(*) AS total_tickets_proximos 
+                FROM reservas r
+                INNER JOIN entradas e ON r.entrada_id = e.entrada_id
+                Inner JOIN eventos ev ON e.evento_id = ev.evento_id
+                WHERE r.usuario_id = ? AND ev.es_activo = 1";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return $result['total_tickets_proximos'];
+    }
+
+    function getTicketsProximos($mysqli, $id_usuario){
+        $sql = "SELECT r.*, ev.nombre_evento AS evento_nombre, ev.fecha_hora, ev.ubicacion
+                FROM reservas r
+                INNER JOIN entradas e ON r.entrada_id = e.entrada_id
+                INNER JOIN eventos ev ON e.evento_id = ev.evento_id
+                WHERE r.usuario_id = ? AND ev.es_activo = 1
+                ORDER BY ev.fecha_hora ASC";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function getTicketsHistorico($mysqli, $id_usuario){
+        $sql = "SELECT r.*, ev.nombre_evento AS evento_nombre, ev.fecha_hora, ev.ubicacion
+                FROM reservas r
+                INNER JOIN entradas e ON r.entrada_id = e.entrada_id
+                INNER JOIN eventos ev ON e.evento_id = ev.evento_id
+                WHERE r.usuario_id = ?
+                ORDER BY ev.fecha_hora ASC";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function getTicketsFinalizados($mysqli, $id_usuario){
+        $sql = "SELECT r.*, ev.nombre_evento AS evento_nombre, ev.fecha_hora, ev.ubicacion
+                FROM reservas r
+                INNER JOIN entradas e ON r.entrada_id = e.entrada_id
+                INNER JOIN eventos ev ON e.evento_id = ev.evento_id
+                WHERE r.usuario_id = ? AND ev.es_activo = 0
+                ORDER BY ev.fecha_hora ASC";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
