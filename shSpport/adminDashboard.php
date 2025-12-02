@@ -356,6 +356,40 @@
             .content-header { position: static; }
         }
 
+        /* Estilos para notificaciones */
+        .notificacion {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .notificacion.show {
+            transform: translateX(0);
+        }
+
+        .notificacion.success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .notificacion.error {
+            background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+        }
+
+        .notificacion i {
+            font-size: 1.2rem;
+        }
+
     </style>
 </head>
 <body>
@@ -1767,6 +1801,23 @@
         let deleteType = '';
         let deleteId = '';
 
+        // Mapeo de tipos a nombres de acción
+        const accionesEliminar = {
+            'comentario': 'eliminarComentario',
+            'detalle_reserva': 'eliminarDetalleReserva',
+            'entrada': 'eliminarEntrada',
+            'evento': 'eliminarEvento',
+            'faq': 'eliminarFaq',
+            'noticia': 'eliminarNoticia',
+            'portfolio': 'eliminarPortfolio',
+            'reserva': 'eliminarReserva',
+            'rol': 'eliminarRol',
+            'testimonio': 'eliminarTestimonio',
+            'tipo_deporte': 'eliminarTipoDeporte',
+            'usuario': 'eliminarUsuario',
+            'zona': 'eliminarZona'
+        };
+
         // Función para mostrar el modal de confirmación de eliminación
         function confirmarEliminar(tipo, id) {
             deleteType = tipo;
@@ -1796,14 +1847,41 @@
         // Configurar el botón de confirmar eliminación
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('btnConfirmarEliminar').addEventListener('click', function() {
-                // Aquí iría la lógica para eliminar de la BD
-                // Por ahora solo mostramos un mensaje
-                alert('Eliminando ' + deleteType + ' con ID: ' + deleteId);
+                const accion = accionesEliminar[deleteType];
+                if (accion) {
+                    window.location.href = 'funciones/funciones.php?accion=' + accion + '&id=' + deleteId;
+                }
                 cerrarModal('modalConfirmarEliminar');
-                // Cuando tengas la BD configurada, descomentar y usar:
-                // window.location.href = 'funciones/funciones.php?accion=eliminar' + deleteType.charAt(0).toUpperCase() + deleteType.slice(1) + '&id=' + deleteId;
             });
+
+            // Mostrar mensaje si existe
+            const urlParams = new URLSearchParams(window.location.search);
+            const mensaje = urlParams.get('mensaje');
+            const tipo = urlParams.get('tipo');
+            
+            if (mensaje) {
+                mostrarNotificacion(mensaje, tipo);
+                // Limpiar URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
         });
+
+        // Función para mostrar notificaciones
+        function mostrarNotificacion(mensaje, tipo) {
+            const notificacion = document.createElement('div');
+            notificacion.className = 'notificacion ' + tipo;
+            notificacion.innerHTML = '<i class="fas fa-' + (tipo === 'success' ? 'check-circle' : 'exclamation-circle') + '"></i> ' + mensaje;
+            document.body.appendChild(notificacion);
+            
+            setTimeout(() => {
+                notificacion.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notificacion.classList.remove('show');
+                setTimeout(() => notificacion.remove(), 300);
+            }, 3000);
+        }
 
         // Cerrar modal al hacer clic fuera del contenido
         document.querySelectorAll('.modal-overlay').forEach(function(modal) {
