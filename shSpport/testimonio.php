@@ -1,6 +1,48 @@
 <?php
     include_once "../shSpport/config/config.php";
     session_start();
+    include_once "funciones/funciones.php";
+
+    $mensaje = '';
+    $tipo_mensaje = '';
+
+    // Procesar el formulario de nuevo testimonio
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_testimonio'])) {
+        if (isset($_SESSION['user_id'])) {
+            $usuario_id = $_SESSION['user_id'];
+            
+            // Verificar si ya tiene un testimonio
+            if (!usuarioTieneTestimonio($mysqli, $usuario_id)) {
+                $contenido = trim($_POST['contenido']);
+                $puntuacion = isset($_POST['puntuacion']) ? intval($_POST['puntuacion']) : 5;
+                $cargo = trim($_POST['cargo']);
+                
+                if (!empty($contenido) && $puntuacion >= 1 && $puntuacion <= 5) {
+                    // es_aprobado = 1 para que se muestre directamente
+                    $resultado = añadirTestimonio($mysqli, $usuario_id, '', $cargo, $contenido, $puntuacion, 1);
+                    if ($resultado) {
+                        $mensaje = '¡Gracias por tu testimonio! Ya está publicado.';
+                        $tipo_mensaje = 'success';
+                    } else {
+                        $mensaje = 'Hubo un error al enviar tu testimonio. Inténtalo de nuevo.';
+                        $tipo_mensaje = 'error';
+                    }
+                } else {
+                    $mensaje = 'Por favor, completa todos los campos correctamente.';
+                    $tipo_mensaje = 'error';
+                }
+            } else {
+                $mensaje = 'Ya has enviado un testimonio anteriormente.';
+                $tipo_mensaje = 'error';
+            }
+        }
+    }
+
+    // Verificar si el usuario logueado ya tiene testimonio
+    $usuario_tiene_testimonio = false;
+    if (isset($_SESSION['user_id'])) {
+        $usuario_tiene_testimonio = usuarioTieneTestimonio($mysqli, $_SESSION['user_id']);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -340,6 +382,174 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Formulario de Nuevo Testimonio */
+        .new-testimonial-section {
+            padding: 60px 5%;
+            background: white;
+        }
+
+        .new-testimonial-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .testimonial-form-card {
+            background: var(--light-bg);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .testimonial-form-card h3 {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .testimonial-form-card > p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+        }
+
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+        }
+
+        /* Estrellas de puntuación */
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 0.3rem;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 2rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input:checked ~ label {
+            color: var(--primary-color);
+        }
+
+        .submit-testimonial-btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 25px;
+            background: var(--gradient-primary);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-testimonial-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Mensajes de alerta */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert i {
+            font-size: 1.2rem;
+        }
+
+        .login-prompt {
+            text-align: center;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .login-prompt p {
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .already-submitted {
+            text-align: center;
+            padding: 2rem;
+            background: #e8f4fc;
+            border-radius: 8px;
+            color: var(--secondary-color);
+        }
+
+        .already-submitted i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -349,6 +559,73 @@
         <div class="section-header" style="margin-bottom: 0;">
             <h1>Opiniones de Nuestros Clientes</h1>
             <p>Lee lo que dicen los aficionados sobre sus experiencias al comprar entradas con DeportesPro.</p>
+        </div>
+    </section>
+
+    <!-- Sección para crear nuevo testimonio -->
+    <section class="new-testimonial-section">
+        <div class="new-testimonial-container">
+            <?php if (!empty($mensaje)): ?>
+                <div class="alert alert-<?php echo $tipo_mensaje; ?>">
+                    <i class="fas fa-<?php echo $tipo_mensaje === 'success' ? 'check-circle' : 'exclamation-circle'; ?>"></i>
+                    <?php echo htmlspecialchars($mensaje); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <?php if (!$usuario_tiene_testimonio): ?>
+                    <div class="testimonial-form-card">
+                        <h3><i class="fas fa-pen" style="color: var(--primary-color); margin-right: 10px;"></i>Comparte tu Experiencia</h3>
+                        <p>¿Has comprado entradas con nosotros? ¡Nos encantaría saber tu opinión!</p>
+                        
+                        <form method="POST" action="">
+                            <input type="hidden" name="crear_testimonio" value="1">
+                            
+                            <div class="form-group">
+                                <label for="cargo">Tu Profesión / Ocupación (opcional)</label>
+                                <input type="text" id="cargo" name="cargo" placeholder="Ej: Aficionado del fútbol, Empresario...">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contenido">Tu Testimonio *</label>
+                                <textarea id="contenido" name="contenido" placeholder="Cuéntanos tu experiencia comprando entradas con DeportesPro..." required></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Puntuación *</label>
+                                <div class="star-rating">
+                                    <input type="radio" id="star5" name="puntuacion" value="5" checked>
+                                    <label for="star5" title="5 estrellas"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star4" name="puntuacion" value="4">
+                                    <label for="star4" title="4 estrellas"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star3" name="puntuacion" value="3">
+                                    <label for="star3" title="3 estrellas"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star2" name="puntuacion" value="2">
+                                    <label for="star2" title="2 estrellas"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star1" name="puntuacion" value="1">
+                                    <label for="star1" title="1 estrella"><i class="fas fa-star"></i></label>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="submit-testimonial-btn">
+                                <i class="fas fa-paper-plane"></i> Enviar Testimonio
+                            </button>
+                        </form>
+                    </div>
+                <?php else: ?>
+                    <div class="already-submitted">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>¡Ya has enviado tu testimonio!</h3>
+                        <p>Gracias por compartir tu experiencia con nosotros. Solo se permite un testimonio por usuario.</p>
+                    </div>
+                <?php endif; ?>
+            <?php else: ?>
+                <div class="login-prompt">
+                    <i class="fas fa-user-circle" style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 1rem; display: block;"></i>
+                    <p>¿Quieres compartir tu experiencia?</p>
+                    <a href="login.php" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Inicia sesión para dejar tu testimonio</a>
+                </div>
+            <?php endif; ?>
         </div>
     </section>
 

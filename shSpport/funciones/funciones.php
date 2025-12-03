@@ -42,7 +42,7 @@
     }
 
     function getTestimonios($mysqli) {
-        $sql = "SELECT u.foto, u.nombre, u.apellido, t.contenido AS testimonio, t.puntuacion
+        $sql = "SELECT u.foto, u.nombre, u.apellido, t.contenido AS testimonio, t.puntuacion, t.cargo
             FROM testimonios t
             INNER JOIN usuarios u ON u.usuario_id = t.usuario_id
             WHERE t.es_aprobado = 1
@@ -498,6 +498,15 @@
     // =====================================================
     // FUNCIONES CRUD - TESTIMONIOS
     // =====================================================
+    function usuarioTieneTestimonio($mysqli, $usuario_id) {
+        $sql = "SELECT COUNT(*) as total FROM testimonios WHERE usuario_id = ?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("i", $usuario_id);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return $result['total'] > 0;
+    }
+
     function añadirTestimonio($mysqli, $usuario_id, $nombre_cliente, $cargo, $contenido, $puntuacion, $es_aprobado) {
         $sql = "INSERT INTO testimonios (usuario_id, nombre_cliente, cargo, contenido, puntuacion, es_aprobado) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $mysqli->prepare($sql);
@@ -843,4 +852,15 @@
             header("Location: ../adminDashboard.php?mensaje=" . urlencode($mensaje) . "&tipo=" . ($resultado ? 'success' : 'error'));
             exit;
         }
+    }
+
+    function contarComentariosPorNoticia($mysqli, $noticia_id) {
+        $sql = "SELECT COUNT(*) AS total_comentarios 
+                FROM comentarios 
+                WHERE noticia_id = ?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("i", $noticia_id);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return $result['total_comentarios'];
     }

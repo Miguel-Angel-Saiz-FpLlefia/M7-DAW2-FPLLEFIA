@@ -1,6 +1,68 @@
 <?php
     include_once "../shSpport/config/config.php";
     session_start();
+    include_once "funciones/funciones.php";
+
+    $noticia_id_redirect = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+    // Procesar el envío de comentarios (nuevo o respuesta)
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comentario_contenido'])) {
+        $noticia_id = isset($_POST['noticia_id']) ? intval($_POST['noticia_id']) : 0;
+        $contenido = trim($_POST['comentario_contenido']);
+        $parent_id = isset($_POST['parent_comentario_id']) && $_POST['parent_comentario_id'] !== '' ? intval($_POST['parent_comentario_id']) : null;
+        
+        // Verificar si el usuario está logueado
+        if (isset($_SESSION['user_id']) && !empty($contenido) && $noticia_id > 0) {
+            $usuario_id = $_SESSION['user_id'];
+            añadirComentario($mysqli, $noticia_id, $usuario_id, $contenido, $parent_id);
+        }
+        
+        // Redirigir para evitar reenvío del formulario
+        header("Location: noticiaDetallada.php?id=" . $noticia_id);
+        exit();
+    }
+
+    // Procesar edición de comentario
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['editar_comentario'])) {
+        $comentario_id = isset($_POST['comentario_id']) ? intval($_POST['comentario_id']) : 0;
+        $noticia_id = isset($_POST['noticia_id']) ? intval($_POST['noticia_id']) : 0;
+        $contenido = trim($_POST['comentario_contenido_edit']);
+        
+        if (isset($_SESSION['user_id']) && !empty($contenido) && $comentario_id > 0) {
+            // Verificar que el usuario es el dueño del comentario
+            $comentarios_usuario = getComentariosByNoticia($noticia_id, $mysqli);
+            foreach ($comentarios_usuario as $com) {
+                if ($com['comentario_id'] == $comentario_id && $com['usuario_id'] == $_SESSION['user_id']) {
+                    $parent_id = $com['parent_comentario_id'];
+                    editarComentario($mysqli, $comentario_id, $noticia_id, $_SESSION['user_id'], $contenido, $parent_id);
+                    break;
+                }
+            }
+        }
+        
+        header("Location: noticiaDetallada.php?id=" . $noticia_id);
+        exit();
+    }
+
+    // Procesar eliminación de comentario
+    if (isset($_GET['eliminar_comentario'])) {
+        $comentario_id = intval($_GET['eliminar_comentario']);
+        $noticia_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        
+        if (isset($_SESSION['user_id']) && $comentario_id > 0) {
+            // Verificar que el usuario es el dueño del comentario
+            $comentarios_usuario = getComentariosByNoticia($noticia_id, $mysqli);
+            foreach ($comentarios_usuario as $com) {
+                if ($com['comentario_id'] == $comentario_id && $com['usuario_id'] == $_SESSION['user_id']) {
+                    eliminarComentario($mysqli, $comentario_id);
+                    break;
+                }
+            }
+        }
+        
+        header("Location: noticiaDetallada.php?id=" . $noticia_id);
+        exit();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -298,6 +360,112 @@
     transform: translateY(-1px); /* Efecto 3D sutil */
 }
 
+/* Botones de Editar y Eliminar */
+.comment-actions .edit-btn,
+.comment-actions .delete-btn {
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: color 0.2s, background-color 0.2s, transform 0.2s;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+}
+
+.comment-actions .edit-btn {
+    color: #888;
+}
+
+.comment-actions .edit-btn i {
+    color: var(--secondary-color);
+    margin-right: 5px;
+}
+
+.comment-actions .edit-btn:hover {
+    color: var(--secondary-color);
+    background-color: #e8f4fc;
+}
+
+.comment-actions .delete-btn {
+    color: #888;
+}
+
+.comment-actions .delete-btn i {
+    color: #dc3545;
+    margin-right: 5px;
+}
+
+.comment-actions .delete-btn:hover {
+    color: #dc3545;
+    background-color: #fde8ea;
+}
+
+/* Formulario de edición inline */
+.edit-form-container {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #e8f4fc 0%, #d6eaf8 100%);
+    border-radius: 8px;
+    border: 1px solid #aed6f1;
+    animation: slideDown 0.3s ease-out;
+}
+
+.edit-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.edit-form-header i {
+    color: var(--secondary-color);
+    margin-right: 5px;
+}
+
+.edit-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #aed6f1;
+    border-radius: 6px;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.edit-form textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(0, 78, 137, 0.15);
+}
+
+.edit-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-top: 0.8rem;
+}
+
+.save-edit-btn {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 20px;
+    background: var(--secondary-color);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.save-edit-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
 
 /* Respuestas Anidadas */
 .comment-replies {
@@ -493,9 +661,6 @@
     <div class="article-container">
         
     <?php
-    
-        include_once "funciones/funciones.php";
-
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
         $noticia = getNoticiaById($id, $mysqli);
 
@@ -523,19 +688,31 @@
     ?>
         
     <div class="comments-section">
-        <h2>Comentarios (3)</h2>
+        <h2>Comentarios (<?php echo contarComentariosPorNoticia($mysqli, $id); ?>)</h2>
         
-        <form class="comment-form">
-            <textarea placeholder="Deja tu opinión sobre este traspaso..." required></textarea>
+        <?php 
+        $usuario_logueado = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+        if ($usuario_logueado): ?>
+        <form class="comment-form" method="POST" action="">
+            <input type="hidden" name="noticia_id" value="<?php echo $id; ?>">
+            <input type="hidden" name="parent_comentario_id" value="">
+            <textarea name="comentario_contenido" placeholder="Deja tu opinión sobre este traspaso..." required></textarea>
             <div class="comment-form-footer">
                 <button type="submit"><i class="fas fa-comment-dots"></i> Publicar Comentario</button>
             </div>
         </form>
+        <?php else: ?>
+        <p style="padding: 1rem; background: #f8f9fa; border-radius: 6px; margin-bottom: 2rem;">
+            <i class="fas fa-info-circle" style="color: var(--primary-color);"></i> 
+            <a href="login.php" style="color: var(--secondary-color); font-weight: 600;">Inicia sesión</a> para dejar un comentario.
+        </p>
+        <?php endif; ?>
             <?php
                 $comentarios = getComentariosByNoticia($id, $mysqli);
                 foreach ($comentarios as $comentario) {
                     if($comentario['parent_comentario_id'] === null) {
-                        echo '<div class="comment-item">
+                        $es_propietario = ($usuario_logueado && $comentario['usuario_id'] == $usuario_logueado);
+                        echo '<div class="comment-item" data-comment-id="' . $comentario['comentario_id'] . '">
                                 <div class="comment-avatar">';
                         if (!empty($comentario['foto'])) {
                             echo '<img src="' . htmlspecialchars($comentario['foto']) . '" alt="' . htmlspecialchars($comentario['nombre']) . '" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">';
@@ -546,34 +723,52 @@
                                 <div class="comment-body">
                                     <h4>' . htmlspecialchars($comentario['nombre']) . ' ' . htmlspecialchars($comentario['apellido']) . '</h4>
                                     <span class="comment-date">' . date("d M Y H:i", strtotime($comentario['fecha_comentario'])) . '</span>
-                                    <p>' . nl2br(htmlspecialchars($comentario['contenido'])) . '</p>
-                                    <div class="comment-actions">
-                                        <button class="reply-btn"><i class="fas fa-reply"></i> Responder</button>
-                                    </div>
+                                    <p class="comment-text">' . nl2br(htmlspecialchars($comentario['contenido'])) . '</p>
+                                    <div class="comment-actions">';
+                        // Botón responder para usuarios logueados
+                        if ($usuario_logueado) {
+                            echo '<button class="reply-btn" data-parent-id="' . $comentario['comentario_id'] . '"><i class="fas fa-reply"></i> Responder</button>';
+                        }
+                        // Botones editar y eliminar solo para el propietario
+                        if ($es_propietario) {
+                            echo '<button class="edit-btn" data-comment-id="' . $comentario['comentario_id'] . '" data-comment-content="' . htmlspecialchars($comentario['contenido'], ENT_QUOTES) . '"><i class="fas fa-edit"></i> Editar</button>';
+                            echo '<a href="noticiaDetallada.php?id=' . $id . '&eliminar_comentario=' . $comentario['comentario_id'] . '" class="delete-btn" onclick="return confirm(\'¿Estás seguro de que quieres eliminar este comentario?\');"><i class="fas fa-trash"></i> Eliminar</a>';
+                        }
+                        echo '</div>
                                 </div>
                             </div>';
+                        
+                        // Mostrar respuestas de este comentario
+                        $respuestas = getRespuestasComentario($comentario['comentario_id'], $mysqli);
+                        foreach ($respuestas as $respuesta) {
+                            $es_propietario_respuesta = ($usuario_logueado && $respuesta['usuario_id'] == $usuario_logueado);
+                            echo '<div class="comment-item" style="margin-left: 40px; background-color: #f9f9f9;" data-comment-id="' . $respuesta['comentario_id'] . '">
+                                    <div class="comment-avatar">';
+                            if (!empty($respuesta['foto'])) {
+                                echo '<img src="' . htmlspecialchars($respuesta['foto']) . '" alt="' . htmlspecialchars($respuesta['nombre']) . '" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">';
+                            } else {
+                                echo strtoupper(substr($respuesta['nombre'], 0, 1));
+                            }
+                            echo '</div>
+                                    <div class="comment-body">
+                                        <h4>' . htmlspecialchars($respuesta['nombre']) . ' ' . htmlspecialchars($respuesta['apellido']) . '</h4>
+                                        <span class="comment-date">' . date("d M Y H:i", strtotime($respuesta['fecha_comentario'])) . '</span>
+                                        <p class="comment-text">' . nl2br(htmlspecialchars($respuesta['contenido'])) . '</p>
+                                        <div class="comment-actions">';
+                            // Botón responder para usuarios logueados (responde al comentario padre)
+                            if ($usuario_logueado) {
+                                echo '<button class="reply-btn" data-parent-id="' . $comentario['comentario_id'] . '"><i class="fas fa-reply"></i> Responder</button>';
+                            }
+                            // Botones editar y eliminar solo para el propietario de la respuesta
+                            if ($es_propietario_respuesta) {
+                                echo '<button class="edit-btn" data-comment-id="' . $respuesta['comentario_id'] . '" data-comment-content="' . htmlspecialchars($respuesta['contenido'], ENT_QUOTES) . '"><i class="fas fa-edit"></i> Editar</button>';
+                                echo '<a href="noticiaDetallada.php?id=' . $id . '&eliminar_comentario=' . $respuesta['comentario_id'] . '" class="delete-btn" onclick="return confirm(\'¿Estás seguro de que quieres eliminar este comentario?\');"><i class="fas fa-trash"></i> Eliminar</a>';
+                            }
+                            echo '</div>
+                                    </div>
+                                </div>';
+                        }
                     }
-                }
-
-                $respuestas = getRespuestasComentario($id, $mysqli);
-                foreach ($respuestas as $respuesta) {
-                    echo '<div class="comment-item" style="margin-left: 40px; background-color: #f9f9f9;">
-                            <div class="comment-avatar">';
-                    if (!empty($respuesta['foto'])) {
-                        echo '<img src="' . htmlspecialchars($respuesta['foto']) . '" alt="' . htmlspecialchars($respuesta['nombre']) . '" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">';
-                    } else {
-                        echo strtoupper(substr($respuesta['nombre'], 0, 1));;
-                    }
-                    echo '</div>
-                            <div class="comment-body">
-                                <h4>' . htmlspecialchars($respuesta['nombre']) . ' ' . htmlspecialchars($respuesta['apellido']) . '</h4>
-                                <span class="comment-date">' . date("d M Y H:i", strtotime($respuesta['fecha_comentario'])) . '</span>
-                                <p>' . nl2br(htmlspecialchars($respuesta['contenido'])) . '</p>
-                                <div class="comment-actions">
-                                    <button class="reply-btn"><i class="fas fa-reply"></i> Responder</button>
-                                </div>
-                            </div>
-                        </div>';
                 }
             ?>
     </div>
@@ -586,6 +781,10 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Obtener el ID de la noticia desde la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const noticiaId = urlParams.get('id');
+            
             // Obtener todos los botones de responder
             const replyButtons = document.querySelectorAll('.reply-btn');
             
@@ -597,9 +796,10 @@
                         form.remove();
                     });
                     
-                    // Obtener el comment-body padre
+                    // Obtener el comment-body padre y el ID del comentario padre
                     const commentBody = this.closest('.comment-body');
                     const commentActions = this.closest('.comment-actions');
+                    const parentCommentId = this.getAttribute('data-parent-id');
                     
                     // Verificar si ya existe un formulario en este comentario
                     if (commentBody.querySelector('.reply-form-container')) {
@@ -609,15 +809,17 @@
                     // Obtener el nombre del usuario al que se responde
                     const userName = commentBody.querySelector('h4').textContent;
                     
-                    // Crear el formulario de respuesta
+                    // Crear el formulario de respuesta con campos ocultos para el POST
                     const replyFormHTML = `
                         <div class="reply-form-container">
-                            <form class="reply-form">
+                            <form class="reply-form" method="POST" action="">
+                                <input type="hidden" name="noticia_id" value="${noticiaId}">
+                                <input type="hidden" name="parent_comentario_id" value="${parentCommentId}">
                                 <div class="reply-form-header">
                                     <span><i class="fas fa-reply"></i> Respondiendo a <strong>${userName}</strong></span>
                                     <button type="button" class="close-reply-btn"><i class="fas fa-times"></i></button>
                                 </div>
-                                <textarea placeholder="Escribe tu respuesta..." required></textarea>
+                                <textarea name="comentario_contenido" placeholder="Escribe tu respuesta..." required></textarea>
                                 <div class="reply-form-actions">
                                     <button type="button" class="cancel-reply-btn">Cancelar</button>
                                     <button type="submit" class="submit-reply-btn"><i class="fas fa-paper-plane"></i> Enviar Respuesta</button>
@@ -644,19 +846,66 @@
                     cancelBtn.addEventListener('click', function() {
                         commentBody.querySelector('.reply-form-container').remove();
                     });
-                    
-                    // Event listener para enviar la respuesta
-                    const replyForm = commentBody.querySelector('.reply-form');
-                    replyForm.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        const replyText = this.querySelector('textarea').value;
-                        
-                        if (replyText.trim() !== '') {
-                            // Aquí puedes agregar la lógica para enviar la respuesta al servidor
-                            alert('¡Respuesta enviada! (Esta funcionalidad requiere implementación del backend)');
-                            commentBody.querySelector('.reply-form-container').remove();
-                        }
+                });
+            });
+
+            // Manejar botones de editar
+            const editButtons = document.querySelectorAll('.edit-btn');
+            
+            editButtons.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    // Cerrar cualquier formulario abierto
+                    const openForms = document.querySelectorAll('.reply-form-container, .edit-form-container');
+                    openForms.forEach(function(form) {
+                        form.remove();
                     });
+                    
+                    const commentBody = this.closest('.comment-body');
+                    const commentActions = this.closest('.comment-actions');
+                    const commentId = this.getAttribute('data-comment-id');
+                    const commentContent = this.getAttribute('data-comment-content');
+                    const commentText = commentBody.querySelector('.comment-text');
+                    
+                    // Crear el formulario de edición
+                    const editFormHTML = `
+                        <div class="edit-form-container">
+                            <form class="edit-form" method="POST" action="">
+                                <input type="hidden" name="editar_comentario" value="1">
+                                <input type="hidden" name="comentario_id" value="${commentId}">
+                                <input type="hidden" name="noticia_id" value="${noticiaId}">
+                                <div class="edit-form-header">
+                                    <span><i class="fas fa-edit"></i> Editando comentario</span>
+                                    <button type="button" class="close-reply-btn close-edit-btn"><i class="fas fa-times"></i></button>
+                                </div>
+                                <textarea name="comentario_contenido_edit" required>${commentContent}</textarea>
+                                <div class="edit-form-actions">
+                                    <button type="button" class="cancel-reply-btn cancel-edit-btn">Cancelar</button>
+                                    <button type="submit" class="save-edit-btn"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                </div>
+                            </form>
+                        </div>
+                    `;
+                    
+                    // Ocultar el texto original y mostrar el formulario
+                    commentText.style.display = 'none';
+                    commentActions.insertAdjacentHTML('afterend', editFormHTML);
+                    
+                    // Focus en el textarea
+                    const newTextarea = commentBody.querySelector('.edit-form textarea');
+                    newTextarea.focus();
+                    newTextarea.setSelectionRange(newTextarea.value.length, newTextarea.value.length);
+                    
+                    // Event listeners para cerrar
+                    const closeBtn = commentBody.querySelector('.close-edit-btn');
+                    const cancelBtn = commentBody.querySelector('.cancel-edit-btn');
+                    
+                    const closeEditForm = function() {
+                        commentBody.querySelector('.edit-form-container').remove();
+                        commentText.style.display = 'block';
+                    };
+                    
+                    closeBtn.addEventListener('click', closeEditForm);
+                    cancelBtn.addEventListener('click', closeEditForm);
                 });
             });
         });
