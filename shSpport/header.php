@@ -1,5 +1,7 @@
 <?php
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
 ?>
 
 <style>
@@ -54,6 +56,7 @@
         <li><a href="contacto.php">Contacto</a></li>
         <?php
           if (isset($_SESSION['user_nom'])) {
+              echo '<li><a href="tickets.php">Tickets</a></li>';
               echo '<li><a href="adminDashboard.php">Panel admin</a></li>';
           }
         ?>
