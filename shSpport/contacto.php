@@ -319,10 +319,17 @@
         
         .map-container {
             height: 450px; 
+            width: 100%;
             background: #eee; /* Fondo temporal hasta que se cargue el mapa */
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+            & iframe {
+                width: 100%;
+                height: 100%;
+                border: 0;
+            }
         }
 
 
@@ -435,7 +442,8 @@
             <p>Aquí puedes encontrar la ubicación de la sede educativa FPLlefià en Badalona.</p>
         </div>
         <div class="map-container">
-            </div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2991.0557999220177!2d2.214471876701537!3d41.43801087129343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4bca24e536f7d%3A0x28f1c015d9bdd22!2zRlBMbGVmacOg!5e0!3m2!1ses!2ses!4v1764841215733!5m2!1ses!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
     </section>
 
     <?php include_once "footer.php"; ?>
