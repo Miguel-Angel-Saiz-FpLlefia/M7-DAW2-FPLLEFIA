@@ -1,0 +1,270 @@
+:root {
+    --primary-color: #2c3e50; /* Blau Fosc */
+    --secondary-color: #3498db; /* Blau Clar */
+    --accent-color: #2ecc71; /* Verd per a accions */
+    --danger-color: #e74c3c; /* Vermell per eliminar */
+    --text-color: #333;
+    --bg-light: #f4f7f6;
+    --card-bg: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* --- LOGIN STYLES --- */
+.login-body {
+    background-color: var(--bg-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-card {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-card h1 {
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.login-card h2 {
+    color: var(--secondary-color);
+    font-weight: 400;
+    margin-bottom: 25px;
+    font-size: 1.2rem;
+}
+
+/* --- DASHBOARD LAYOUT (Admin & Operari) --- */
+.dashboard-body {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.main-nav .nav-item {
+    display: block;
+    padding: 12px 20px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.main-nav .nav-item:hover, .main-nav .nav-item.active {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.user-info {
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+}
+
+.user-info .logout {
+    color: var(--accent-color);
+    text-decoration: none;
+    margin-top: 5px;
+    display: block;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: var(--bg-light);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* --- GENERAL FORM & BUTTON STYLES --- */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+input[type="email"], input[type="password"], input[type="number"], select, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--secondary-color);
+    outline: none;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-success {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #27ae60;
+}
+
+.btn-edit {
+    background-color: #f39c12; /* Taronja */
+    color: white;
+    margin-right: 5px;
+}
+
+.btn-delete {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-full-width {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* --- TABLES --- */
+.data-table-container {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.data-table th, .data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.data-table th {
+    background-color: var(--bg-light);
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* --- CARDS FOR OPERARI --- */
+.form-card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    max-width: 600px;
+    margin: 0 auto 50px auto; /* Centrar el formulari de l'operari */
+}
+
+/* --- PERMISSIONS ERROR PAGE --- */
+.error-page {
+    text-align: center;
+    padding: 50px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    margin-top: 50px;
+}
+.error-page h2 {
+    color: var(--danger-color);
+}
+
+/* Aquesta secció hauria d'estar al teu fitxer styles.css */
+.form-group-inline {
+    display: flex;
+    gap: 20px;
+}
+
+.form-group-inline .form-group {
+    flex: 1; /* Distribueix l'espai uniformement */
+}
+
+/* Nou estil per a la targeta de filtres */
+.filters-card {
+    background: #f7f7f7;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.filters-form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.filters-form label {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.filters-form input, .filters-form select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
